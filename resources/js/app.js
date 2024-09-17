@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
-
+import "@fortawesome/fontawesome-free/css/all.min.css"
+import {Link} from '@inertiajs/vue3';
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -15,6 +16,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .component('Link',Link)
             .mount(el);
     },
     progress: {

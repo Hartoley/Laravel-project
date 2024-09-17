@@ -124,11 +124,11 @@
         <div>
           <label for="travel_companion" class="block text-sm font-medium text-gray-700">Are there other persons traveling with you?</label>
           <div class="mt-1">
-            <input type="radio" name="travel_companion" value="No" v-model="travel_companion_no" class="focus:ring-indigo-500 h-4 w-4 text-blue-600 border-gray-300">
+            <input type="radio" name="travel_companion" value="No" @change="travel_companion_yes = false" v-model="travel_companion_no" class="focus:ring-indigo-500 h-4 w-4 text-blue-600 border-gray-300">
             <label for="travel_companion-no" class="ml-3 block text-sm font-medium text-gray-700">No</label>
           </div>
           <div class="mt-1">
-            <input type="radio" name="travel_companion" value="Yes" v-model="travel_companion_yes" class="focus:ring-indigo-500 h-4 w-4 text-blue-600 border-gray-300">
+            <input type="radio" name="travel_companion" value="Yes" @change="travel_companion_yes = true" v-model="travel_companion_yes" class="focus:ring-indigo-500 h-4 w-4 text-blue-600 border-gray-300">
             <label for="travel_companion-yes" class="ml-3 block text-sm font-medium text-gray-700">Yes</label>
           </div>
         </div>
@@ -137,6 +137,31 @@
           <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700">Submit</button>
         </div>
       </form>
+
+      <!-- COMPANINION DETAILS -->
+      <table v-if="travel_companion !== ''">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Name</th>
+            <th>Relationship</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(companion, i) in travel_companion">
+            <td>{{ i+1 }}</td>
+            <td>{{ companion.firstName }}</td>
+            <td>{{ companion.relationship }}</td>
+            <td>
+              <button class="bg-red-500 rounded-md text-white p-2">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
       <div v-if="travel_companion_yes" class="w-full bg-red-200 h-auto m-5">
         <!-- v-if="travel_companion_yes && !travel_companion_no" -->
         <h1>Travel Companion Details</h1>
@@ -147,6 +172,10 @@
 
         <div>
           <label for="traveling-companion-relationship" class="block text-sm font-medium text-gray-700">Relationship with Person:</label>
+          <input type="text" name="traveling-companion-relationship" v-model="companion_relationship" class="mt-1 block w-3/4 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div>
+          <label for="traveling-companion-relationship" class="block text-sm font-medium text-gray-700">Travelled Before?</label>
           <input type="text" name="traveling-companion-relationship" v-model="companion_relationship" class="mt-1 block w-3/4 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
         </div>
         <button @click="companions" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-4">Save Companion</button>

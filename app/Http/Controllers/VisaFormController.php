@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TravelCompanion;
 use App\Models\VisaForm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class VisaFormController extends Controller
 {
@@ -20,7 +24,20 @@ class VisaFormController extends Controller
         $arrival =$request->input('arrival');
         $departure =$request->input('departure');
         $travel_companion =$request->input('travel_companion');
-
+        Log::info($travel_companion);
+        // Log::info(count($travel_companion));
+        $transaction_id = Str::uuid();
+        // Log::info($transaction_id);
+        if(count($travel_companion) > 0){
+            foreach ($travel_companion as $comp) {
+                Log::info($comp['firstName']);
+                TravelCompanion::create([
+                    'name'=> $comp['firstName'],
+                    'relationship'=> $comp['relationship'],
+                    'transaction_id'=> $transaction_id
+                ]);
+            }
+        }
         VisaForm::create([
          'email'=> $email,
          'surname'=> $surname,
@@ -33,8 +50,18 @@ class VisaFormController extends Controller
          'arrival'=> $arrival,
          'departure'=> $departure,
          'travel_companion'=> $travel_companion,
-         
+         'transaction_id'=> $transaction_id
         ]);
+
+        return response()->json(["message" => "Your application is being processed"], 200);
+    }
+
+    public function fetchUserApplication()
+    {
+        $user = Auth::user();
+        $applications = VisaForm::where('email', $user->email)->get();
+
+        return response()->json(["applications" => $applications],200);
     }
        
 }

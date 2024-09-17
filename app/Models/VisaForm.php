@@ -19,7 +19,9 @@ class VisaForm extends Model
         'journey_purpose',
         'arrival',
         'departure',
-        'travel_companion'
+        'travel_companion',
+        'transaction_id',
+        'status'
     ];
     protected $casts = [
         'travel_companion' => 'array',

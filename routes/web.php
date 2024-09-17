@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Intro', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -20,7 +20,8 @@ Route::get("/about", function(){
 });
 Route::get("/travel", function(){
     return Inertia::render("Travel");
-})->name(name:"travel");
+})->middleware(['auth'])->name(name:"travel");
+
 Route::get("/adminTravel", function(){
     return Inertia::render("Admintravel");
 });
@@ -33,7 +34,16 @@ Route::get("/landingPage", function(){
     return Inertia::render("Landing");
 })->middleware(['auth'])->name("landing");
 
+Route::get("/user_dashboard", function(){
+    return Inertia::render("UserDashboard");
+})->middleware(['auth'])->name('user.dashboard');
+Route::get("/user_application", function(){
+    return Inertia::render("Application");
+})->middleware(['auth'])->name('user.dashboard');
+
 Route::post("visaForm", [VisaFormController::class, 'visaForm'])->name("visa.create");
+Route::get("get_user_applications", [VisaFormController::class, 'fetchUserApplication'])->name("user.fetch_application");
+
 Route::post("createTour", [TourPackagesController::class, 'createTour'])->name("tour.create");
 Route::get("fetchTour", [TourPackagesController::class, 'fetchPackages'])->name("tour.fetch");
 
@@ -43,6 +53,8 @@ Route::get("/createTour", function(){
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

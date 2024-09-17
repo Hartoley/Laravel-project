@@ -89,6 +89,7 @@ const submit = () => {
                     Log in
                 </PrimaryButton>
             </div>
+            <p class="text-white text-[18px] text-center">Don't have an account? <Link :href="route('register')">Register</Link></p>
         </form>
     </GuestLayout>
 </template>
