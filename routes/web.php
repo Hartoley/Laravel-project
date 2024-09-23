@@ -3,7 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TourPackagesController;
 use App\Http\Controllers\VisaFormController;
+use App\Mail\WelcomeMail;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -60,6 +62,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get("send_mail", function (){
+    $data = ["name" => "Daniel", "subject"=> "Welcome to Danny Airline"];
+    Mail::to("boluwatifedaniell29@gmail.com")->send(new WelcomeMail($data));
+
+    return "Email sent successfully";
 });
 
 require __DIR__.'/auth.php';
