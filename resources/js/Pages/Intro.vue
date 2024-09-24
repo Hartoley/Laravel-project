@@ -131,7 +131,7 @@
         <p class="pt-[1vw] mb-[1vw]" id="about2">Available Tours And Itinery</p>
         <div class="w-[90vw] h-auto mt-[4vw] flex flex-wrap justify-center items-center gap-4">
             <div  v-for="(tour, index) in tours" :key="index" class="w-[23%] transition duration-100 hover:shadow-lg transition-shadow duration-500 ease-in-out transform hover:scale-110 border-[0.5px] border-[rgb(140,215,226)] h-[65vh] gap-[2vw]">
-                <img class="w-[100%] h-[50%] m-0" :src="tour.images" alt="">
+                <img class="w-[100%] h-[50%] m-0" :src="'storage/'+tour.images" alt="">
                <div class="pl-[0.8vw] h-auto">
                 <p class="pt-[0.5vw]" id="tours1">{{ tour.tour_name }}</p>
                 <p class="pt-[0.5vw]" id="tours2">{{ tour.tour_decs }}</p>

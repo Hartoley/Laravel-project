@@ -2,10 +2,10 @@
     <Header></Header>
     <div class="max-w-md mx-auto p-4 pt-6 md:p-6 lg:p-12">
       <h1 class="text-3xl font-bold mb-4">Create a Tour</h1>
-      <form @submit.prevent="createTour">
+      <form @submit.prevent="createTour" enctype="multipart/form-data">
         <div class="mb-4">
           <label for="image" class="block text-sm font-medium mb-2">Upload Image</label>
-          <input type="file" id="image" class="w-full p-2 pl-10 text-sm text-gray-700" />
+          <input @change="pickFile($event)" type="file" id="image" class="w-full p-2 pl-10 text-sm text-gray-700" />
         </div>
         <div class="mb-4">
           <label for="tour-name" class="block text-sm font-medium mb-2">Tour Name</label>
@@ -77,25 +77,37 @@
         destination: '',
         tourDuration:'',
         tourDate: '',
+        img: null,
         tours: [],
        
 
       }
     },
     methods: {
+      pickFile(e){
+        this.img = e.target.files[0];
+      },
       createTour() {
-        let data = {
-          tour_name: this.tourName,
-          tour_prices: this.price,
-          tour_decs: this.tourDescription,
-          destination: this.destination,
-          tourDuration:this.tourDate, 
-          duration:this.duration 
+        // let data = {
+        //   tour_name: this.tourName,
+        //   tour_prices: this.price,
+        //   tour_decs: this.tourDescription,
+        //   destination: this.destination,
+        //   tourDuration:this.tourDate, 
+        //   duration:this.duration 
 
-        }
-        console.log(data);
-        axios.post(route("tour.create"), data).then((res)=>{
+        // }
+        let formData = new FormData();
+        formData.append("tour_name", this.tourName)
+        formData.append("tour_prices", this.price)
+        formData.append("tour_decs", this.tourDescription)
+        formData.append("destination", this.destination)
+        formData.append("tourDuration", this.tourDate)
+        formData.append("tourImg", this.img)
+
+        axios.post(route("tour.create"), formData).then((res)=>{
             console.log(res);
+            this.fetching();
         }).catch((err)=>{
             console.log(err);
         })
