@@ -17,6 +17,8 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+    Route::get("verify_mail/{con_link}", [RegisteredUserController::class, "confirm_link"])->name("verify_mail");
+
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
 
