@@ -1,11 +1,11 @@
 <template>
    <Header></Header>
-   <div class="max-w-md mx-auto p-4 pt-6 md:p-6 lg:p-12">
+   <form @submit.prevent="createTour" enctype="multipart/form-data" class="max-w-md mt-[10vh] mx-auto p-4 pt-6 md:p-6 lg:p-12">
      <h1 class="text-3xl font-bold mb-4">Create a Tour</h1>
      <div>
        <div class="mb-4">
          <label for="image" class="block text-sm font-medium mb-2">Upload Image</label>
-         <input type="file" id="image" class="w-full p-2 pl-10 text-sm text-gray-700" />
+         <input type="file" @change="pickfile($event)" id="image" class="w-full p-2 pl-10 text-sm text-gray-700" />
        </div>
        <div class="mb-4">
          <label for="tour-name" class="block text-sm font-medium mb-2">Tour Name</label>
@@ -28,10 +28,10 @@
          <input type="text" id="tour-date" v-model="tourDate" class="w-full p-2 pl-10 text-sm text-gray-700" />
        </div>
        <div class="flex justify-end">
-         <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" @click="createTour">Create Tour</button>
+         <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" type="submit" >Create Tour</button>
        </div>
      </div>
-   </div>
+    </form>
  </template>
  
  <script>
@@ -49,21 +49,34 @@ import Header from './Header.vue';
        price: '',
        destination: '',
        tourDate: '',
+       img: null,
        tours: JSON.parse(localStorage.getItem('Tours')) || [],
 
      }
    },
    methods: {
+      pickfile(e){
+          console.log(e.target.files[0]);
+          this.img = e.target.files[0]
+          
+      },
      createTour() {
-       let tourDetail = {
-         tour_name: this.tourName,
-         tour_prices: this.price,
-         tour_decs: this.tourDescription,
-         destination: this.destination,
-         tourDuration:this.tourDate,  
-       }
-       console.log(tourDetail);
-       axios.post(route("tour.create"), tourDetail).then((res)=>{
+      //  let tourDetail = {
+      //    tour_name: this.tourName,
+      //    tour_prices: this.price,
+      //    tour_decs: this.tourDescription,
+      //    destination: this.destination,
+      //    tourDuration:this.tourDate,  
+      //  }
+      let formData= new FormData();
+      formData.append('tour_name', this.tourName)
+      formData.append('tour_prices', this.price)
+      formData.append('tour_decs', this.tourDescription)
+      formData.append('destination', this.destination)
+      formData.append(' tourDuration', this.tourDate)
+      formData.append('images', this.img)
+      
+       axios.post(route("tour.create"), formData).then((res)=>{
            console.log(res);
        }).catch((err)=>{
            console.log(err);

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\TourPackages;
+use App\Models\TravelCompanion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TourPackagesController extends Controller
 {
@@ -14,6 +16,15 @@ class TourPackagesController extends Controller
         $decs =$request->input('tour_decs');
         $duration =$request->input('tourDuration');
         $destination =$request->input('destination');
+        if($request->hasFile('images')){
+            $file =$request->file('images');
+            Log::info($file);
+            $fileName=time().''. $file->getClientOriginalName();
+            $filePath =$file->storeAs('tourImages', $fileName, 'public');
+            Log::info($filePath);
+        };
+       
+
 
         TourPackages::create([
            'destination'=>$destination,
@@ -21,7 +32,7 @@ class TourPackagesController extends Controller
            'tourDuration'=>$duration,
            'tour_name'=> $name,
            'tour_prices'=>$prices,
-           'images'=>"https://i.pinimg.com/474x/95/e9/e8/95e9e8b4d101498a6bec4551f60ff4a3.jpg",
+           'images'=>$filePath,
 
                    ]);
             return response()->json(['message'=>"Package created successfully"]);
@@ -31,5 +42,22 @@ class TourPackagesController extends Controller
         $packages =TourPackages::all();
         return response()->json($packages);
 
+    }
+
+    public function fetchTour(Request $request){
+        $request->validate([
+                'id' => 'required|exists:tour_packages,id',
+            ]);
+        $applications = TourPackages::where('id', $request->id)->get();
+
+        return response()->json(["applications" => $applications],200);
+    }
+
+    public function fetchCompanions(Request $request){
+        $tranz_id =$request->input('transaction_id');
+        $companions=TravelCompanion::where("transaction_id", $tranz_id)->get();
+        if($companions->isEmpty()){
+            return response()->json(["error"=>"There are no companions for this package"],404);
+        }
     }
  }

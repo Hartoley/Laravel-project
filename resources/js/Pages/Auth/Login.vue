@@ -89,6 +89,8 @@ const submit = () => {
                     Log in
                 </PrimaryButton>
             </div>
+            <p>Don't have an account?</p>
+           
         </form>
     </GuestLayout>
 </template>
