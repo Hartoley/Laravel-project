@@ -26,7 +26,7 @@
       <p class="mb-4">
         You can complete online payment using your Naira Master, Visa, or Verve card securely with Paystack using the button below.
       </p>
-      <button class="bg-blue-700 text-white py-2 px-4 rounded shadow hover:bg-blue-800">
+      <button @click="pay" class="bg-blue-700 text-white py-2 px-4 rounded shadow hover:bg-blue-800">
         Pay With Paystack
       </button>
     </div>
@@ -88,15 +88,35 @@ export default {
         Footer,
     },
     props: {
+       email: String,
         id: {
             type: [String, Number],
             required: true
         }
-    },
-    data() {
+  },
+
+      data() {
         return{
             
         }
-    }
+    },
+
+    methods: {
+     pay() {
+        axios.post(route('pay'))    
+          .then((response) => {
+            console.log(response.data);
+            // const url = response.data.url[0].url
+            
+        })
+        .catch((error) => {
+            console.error('Error during payment:', error.response.data);
+        });
+}
+
+    },
+
+
+  
 }
 </script>
