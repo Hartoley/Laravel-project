@@ -15,8 +15,8 @@ class PaystackController extends Controller
     {
         try {
             $data = [
-                "amount" => 700 * 100, // Amount in kobo
-                "reference" => 'helolmhellololokmknjkjkkhjknklynk568989',
+                "amount" => 700 * 100,
+                "reference" => 'helolmhellololokmmknjkjkkhjknklynk568989',
                 "email" => 'user@mail.com',
                 "currency" => "NGN",
                 "orderID" => 23456,
