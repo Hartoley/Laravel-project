@@ -42,6 +42,13 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'profit_wallet',
+            'investment_wallet',
+            'main_wallet',
+            'referral_code',
+            'referral_link',
+            'referred_by',
+            'activate_investment',
         ];
     }
 }
