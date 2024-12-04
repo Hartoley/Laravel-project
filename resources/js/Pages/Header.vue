@@ -1,18 +1,18 @@
 <template>
-<nav class="bg-[rgb(59,83,145)] h-[10vh] fixed top-0 left-0 w-full z-10 text-white border-b border-gray-200">
+<nav class="bg-[#003399] h-[10vh] fixed top-0 left-0 w-full z-10 text-white border-b border-gray-200">
   <div class="container flex items-center justify-between h-16 px-6 mx-auto">
     <img class="h-8 mr-3" src="https://i.pinimg.com/474x/c2/45/31/c245311698a8e4801bc402c592714e92.jpg" alt="Logo">
     <div class="flex items-center">
      
       <div class="w-[60vw] opacity-100 text-white text-[0.6vw] hidden md:flex space-x-10">
-        <a href="#"  class=" tw-[30px] hover:text-blue-500">BOOK CHEAP FLIGHTS</a>
-        <a href="#" class="tw-[30px] hover:text-blue-500">FLIGHTS</a>
-        <a href="#" class="tw-[30px] hover:text-blue-500">HOLIDAYS</a>
-        <a href="#" class="tw-[30px] hover:text-blue-500">ASPOM SERVICES</a>
+        <a :href="route('travel')"  class=" tw-[30px] hover:text-blue-500">BOOK CHEAP FLIGHTS</a>
+        <a :href="route('travel')" class="tw-[30px] hover:text-blue-500">FLIGHTS</a>
+        <a :href="route('travel')" class="tw-[30px] hover:text-blue-500">HOLIDAYS</a>
+        <a :href="route('travel')" class="tw-[30px] hover:text-blue-500">ASPOM SERVICES</a>
         <a :href="route('travel')" class="tw-[30px] hover:text-blue-500">VISA SERVICES</a>
-        <a class="tw-[30px] hover:text-blue-500">APPLICATION STATUS</a>
-        <a href="#" class="tw-[30px] hover:text-blue-500">CONTACT US</a>
-        <a href="#" class="tw-[30px] hover:text-blue-500">BLOG</a>
+        <a :href="route('travel')" class="tw-[30px] hover:text-blue-500">APPLICATION STATUS</a>
+        <a :href="route('travel')"class="tw-[30px] hover:text-blue-500">CONTACT US</a>
+        <a :href="route('travel')" class="tw-[30px] hover:text-blue-500">BLOG</a>
       </div>
     </div>
     <div class="hidden md:flex items-center">

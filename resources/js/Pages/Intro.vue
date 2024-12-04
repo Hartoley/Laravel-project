@@ -82,29 +82,48 @@
       </div>
     </div>
   </div>
-  <div class="w-full flex items-center justify-center flex-col h-auto bg-gradient-to-t from-[rgb(0,83,176)] via-[rgb(0,98,242)] to-[rgb(112,194,239)] p-6 mt-[8vh]">
-    <p class="pt-[1vw] mb-[1vw]" id="about2">Available Tours And Itinerary</p>
-    <div class="w-[90vw] h-auto mt-[4vw] flex flex-wrap justify-center items-center gap-4">
-      <div   @click="bookTour(tour.id)" v-for="(tour, index) in tours" :key="index" class="w-[23%] transition duration-100 hover:shadow-lg transition-shadow duration-500 ease-in-out transform hover:scale-110 border-[0.5px] border-[rgb(140,215,226)] h-[65vh] gap-[2vw]">
-        <img class="w-[100%] h-[50%] m-0" :src="'storage/' + tour.images" alt="">
-        <div class="pl-[0.8vw] h-auto">
-          <p class="pt-[0.5vw]" id="tours1">{{ tour.tour_name }}</p>
-          <p class="pt-[0.5vw]" id="tours2">{{ tour.tour_decs }}</p>
-          <p class="pt-[0.5vw]" id="tours1">{{ tour.tour_prices }}</p>
-        </div> 
-        <button  class="w-[12vw] h-[3vw] ml-[1vw] text-[12px] border-[rgb(140,215,226)] border-[0.09vw]">Book tour</button>
-      </div> 
+<div class="w-full flex flex-col items-center justify-center bg-gradient-to-t from-[rgb(0,83,176)] via-[rgb(0,98,242)] to-[rgb(112,194,239)] py-12 px-6">
+  <p class="text-2xl font-bold text-white mb-8" id="about2">Available Tours and Itinerary</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full max-w-7xl">
+    <div 
+      @click="bookTour(tour.id)" 
+      v-for="(tour, index) in tours" 
+      :key="index" 
+      class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-300 hover:scale-105 border border-gray-200">
+      
+      <!-- Image Section -->
+      <img class="w-full h-48 object-cover" :src="'/storage/' + tour.images" alt="Tour Image">
+
+      <!-- Card Content -->
+      <div class="p-4">
+        <p class="text-lg font-semibold text-gray-800" id="tours1">{{ tour.tour_name }}</p>
+        <p class="text-sm text-gray-600 my-2" id="tours2">{{ tour.tour_decs }}</p>
+        <p class="text-xl font-bold text-blue-600" id="tours1">{{ tour.tour_prices }}</p>
+      </div>
+
+      <!-- Button Section -->
+      <div class="p-4 pt-0">
+        <button 
+          class="w-full py-2 text-center text-white bg-blue-500 hover:bg-blue-600 rounded-md transition">
+          Book Tour
+        </button>
+      </div>
     </div>
   </div>
+</div>
+
+  <Footer></Footer>
 </template>
 
 <script>
 import Header from './Header.vue';
 import axios from 'axios';
+import Footer from './Footer.vue';
 
 export default {
   components: {
-    Header
+    Header,
+    Footer
   },
   data() {
     return {

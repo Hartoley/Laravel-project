@@ -175,35 +175,52 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4">
-      <h1>Welcome to my flight page</h1>
-      <div class="bg-blue-500 text-white py-8 px-4">
-        <h2 class="text-3xl font-bold">Popular Tours</h2>
-        <p class="text-lg mt-4">Choose an attractive tour package.</p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="bg-white rounded-lg shadow-md p-4 text-center" v-for="(tour, index) in tours" :key="index">
-            <img :src="tour.images" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
-            <h2 class="text-2xl font-bold mb-2">{{ tour.tour_name }}</h2>
-            <p class="text-gray-700 mb-4">{{ tour.tour_decs }}</p>
-            <p class="text-lg font-semibold">{{ Number(tour.tour_prices).toLocaleString() }}</p>
-            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">LEARN MORE</button>
-          </div>
-        </div>
+   <div class="w-full flex flex-col items-center justify-center bg-gradient-to-t from-[rgb(0,83,176)] via-[rgb(0,98,242)] to-[rgb(112,194,239)] py-12 px-6">
+  <p class="text-2xl font-bold text-white mb-8" id="about2">Available Tours and Itinerary</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full max-w-7xl">
+    <div 
+      @click="bookTour(tour.id)" 
+      v-for="(tour, index) in tours" 
+      :key="index" 
+      class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-300 hover:scale-105 border border-gray-200">
+      
+      <!-- Image Section -->
+      <img class="w-full h-48 object-cover" :src="'/storage/' + tour.images" alt="Tour Image">
+
+      <!-- Card Content -->
+      <div class="p-4">
+        <p class="text-lg font-semibold text-gray-800" id="tours1">{{ tour.tour_name }}</p>
+        <p class="text-sm text-gray-600 my-2" id="tours2">{{ tour.tour_decs }}</p>
+        <p class="text-xl font-bold text-blue-600" id="tours1">{{ tour.tour_prices }}</p>
+      </div>
+
+      <!-- Button Section -->
+      <div class="p-4 pt-0">
+        <button 
+          class="w-full py-2 text-center text-white bg-blue-500 hover:bg-blue-600 rounded-md transition">
+          Book Tour
+        </button>
       </div>
     </div>
+  </div>
+</div>
+
 
     
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
 import Header from './Header.vue';
 import axios from 'axios';
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import Footer from './Footer.vue';
 
 export default {
   components: {
     Header,
+    Footer
   },
   data() {
     return {

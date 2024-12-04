@@ -1,5 +1,5 @@
 <template>
-<footer class="bg-[rgb(59,83,145)] text-white py-8 mt-5">
+<footer class="bg-[#003399] text-white py-8">
   <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4">
     
     <div>

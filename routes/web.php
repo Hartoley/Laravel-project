@@ -33,6 +33,11 @@ Route::get("/signin", function () {
     return Inertia::render("Login");
 });
 
+Route::get("/visastatus", function () {
+    return Inertia::render("VisaStatus");
+});
+
+
 Route::get("/usersDash", function () {
     return Inertia::render("Application");
 })->middleware(['auth'])->name('user.application');
