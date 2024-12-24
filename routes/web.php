@@ -35,7 +35,7 @@ Route::get("/signin", function () {
 
 Route::get("/visastatus", function () {
     return Inertia::render("VisaStatus");
-});
+})->name('visastatus');
 
 
 Route::get("/usersDash", function () {
@@ -56,7 +56,7 @@ Route::get("/adminTravel", function () {
 
 Route::get("/keenaTravel", function () {
     return Inertia::render("Intro");
-});
+})->name('keenaTravel');
 
 Route::get("/makePayment/{id}", function ($id) {
     $user = Auth::user();
@@ -83,6 +83,10 @@ Route::get("/visaAdmin", function () {
     return Inertia::render("VisaAdmin");
 });
 
+Route::get("/cheapFligths", function () {
+    return Inertia::render("BookCheap");
+})->name('cheapFligths');
+
 Route::get("/landingPage", function () {
     return Inertia::render("Landing");
 })->middleware(['auth'])->name("landing");
@@ -102,6 +106,7 @@ Route::post("login_user", [LoginUserController::class, 'LoginUser'])->name("user
 Route::post("signIn", [LoginUserController::class, 'signIn'])->name("users.signin");
 Route::post("createTour", [TourPackagesController::class, 'createTour'])->name("tour.create");
 Route::get("fetchTour", [TourPackagesController::class, 'fetchPackages'])->name("tour.fetch");
+Route::get("fetchUserTours", [TravelPlanController::class, 'fetchUserTours'])->name("usertour.fetch");
 Route::get("fetchCompanions", [TourPackagesController::class, 'fetchCompanions'])->name("fetch.Companions");
 Route::post("acceptApplication", [VisaFormController::class, 'acceptApplication'])->name("accept.applications");
 Route::post("rejectApplication", [VisaFormController::class, 'rejectApplication'])->name("reject.applications");
