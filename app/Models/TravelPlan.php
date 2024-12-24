@@ -14,6 +14,8 @@ class TravelPlan extends Model
         'email',
         'mobileNum',
         'tourName',
-        'instructions'
+        'instructions',
+        'paymentImage',
+        'paymentStatus',
     ];
 }

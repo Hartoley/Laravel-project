@@ -1,188 +1,370 @@
 <template>
-    <div class=" w-full overflow-x-auto">
-    <table class="w-full bg-white border border-gray-300">
-      <thead>
-        <tr class="bg-[rgb(59,83,145)] text-white uppercase text-sm">
-          <th class="py-3 px-4 text-left">Email</th>
-          <th class="py-3 px-4 text-left">Surname</th>
-          <th class="py-3 px-4 text-left">First Name</th>
-          <th class="py-3 px-4 text-left">Residence</th>
-          <th class="py-3 px-4 text-left">Marital Status</th>
-          <th class="py-3 px-4 text-left">National ID</th>
-          <th class="py-3 px-4 text-left">Travel Document</th>
-          <th class="py-3 px-4 text-left">Journey Purpose</th>
-          <th class="py-3 px-4 text-left">Arrival</th>
-          <th class="py-3 px-4 text-left">Departure</th>
-          <th class="py-3 px-4 text-left">Actions</th>
-          <th class="py-3 px-4 text-left">Partners</th>
+    <div class="min-h-screen flex flex-col bg-gray-50">
+        <Header />
 
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in visApplicants" :key="index" class="border-b text-[15px] text-white bg-blue-500 hover:bg-blue-200 hover:text-blue-500">
-          <td class="py-2 px-2">{{ item.email }}</td>
-          <td class="py-2 px-2">{{ item.surname }}</td>
-          <td class="py-2 px-2">{{ item.first_name }}</td>
-          <td class="py-2 px-2">{{ item.residence }}</td>
-          <td class="py-2 px-2">{{ item.marital_status }}</td>
-          <td class="py-2 px-2">{{ item.national_identity_number }}</td>
-          <td class="py-2 px-2">{{ item.travel_document }}</td>
-          <td class="py-2 px-2">{{ item.journey_purpose }}</td>
-          <td class="py-2 px-2">{{ item.arrival }}</td>
-          <td class="py-2 px-2">{{ item.departure }}</td>
-          <td class="py-2 px-2 flex">
-            <div v-if="item.status === 'P.lending'">
-                <button @click="accept(item.id)" class="bg-red-500 hover:bg-red-600 text-white font-bold mx-1 rounded mt-4">Accept</button>
-                <button @click="reject(item.id)" class="bg-red-500 hover:bg-red-600 text-white font-bold rounded mt-4">Delete</button>
+        <main class="flex-1 p-6 mt-[12vh]">
+            <div class="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-4">
+                    Visa Applications Management
+                </h1>
+
+                <div class="overflow-x-auto">
+                    <table
+                        class="w-full text-left border-collapse border border-gray-300 rounded-lg"
+                    >
+                        <thead
+                            class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white"
+                        >
+                            <tr>
+                                <th
+                                    class="py-3 px-4 text-sm uppercase font-semibold"
+                                >
+                                    Email
+                                </th>
+                                <th
+                                    class="py-3 px-4 text-sm uppercase font-semibold"
+                                >
+                                    Full Name
+                                </th>
+                                <th
+                                    class="py-3 px-4 text-sm uppercase font-semibold"
+                                >
+                                    Residence
+                                </th>
+                                <th
+                                    class="py-3 px-4 text-sm uppercase font-semibold"
+                                >
+                                    Status
+                                </th>
+                                <th
+                                    class="py-3 px-4 text-sm uppercase font-semibold"
+                                >
+                                    Actions
+                                </th>
+                                <th
+                                    class="py-3 px-4 text-sm uppercase font-semibold"
+                                >
+                                    Companions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(item, index) in visApplicants"
+                                :key="index"
+                                class="bg-white border-b hover:bg-gray-100"
+                            >
+                                <td class="py-3 px-4 text-gray-700">
+                                    {{ item.email }}
+                                </td>
+                                <td class="py-3 px-4 text-gray-700">
+                                    {{ item.first_name }} {{ item.surname }}
+                                </td>
+                                <td class="py-3 px-4 text-gray-700">
+                                    {{ item.residence }}
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span
+                                        class="py-1 px-3 rounded-full text-xs font-semibold capitalize"
+                                        :class="{
+                                            'bg-green-100 text-green-600':
+                                                item.status === 'Accepted',
+                                            'bg-yellow-100 text-yellow-600':
+                                                item.status === 'Pending',
+                                            'bg-red-100 text-red-600':
+                                                item.status === 'Rejected',
+                                        }"
+                                    >
+                                        {{ item.status }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 flex space-x-2">
+                                    <button
+                                        v-if="item.status === 'Pending'"
+                                        class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-sm"
+                                        @click="accept(item.id)"
+                                    >
+                                        Accept
+                                    </button>
+                                    <button
+                                        v-if="item.status === 'Pending'"
+                                        class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded text-sm"
+                                        @click="reject(item.id)"
+                                    >
+                                        Reject
+                                    </button>
+                                    <span v-else class="text-gray-500 italic">
+                                        No actions available
+                                    </span>
+                                </td>
+                                <td
+                                    class="py-3 px-4"
+                                    v-if="item.travel_companion.length > 0"
+                                >
+                                    <button
+                                        class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm"
+                                        @click="partner(item.transaction_id)"
+                                    >
+                                        View Companions
+                                    </button>
+                                </td>
+                                <td v-else class="mb-4">
+                                    No companions added.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div
+                    v-if="showCompanion"
+                    class="mt-8 bg-gray-100 p-4 rounded-lg shadow-lg"
+                >
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">
+                        Companions for Application
+                    </h2>
+                    <div class="overflow-x-auto">
+                        <table
+                            class="w-full text-left border-collapse border border-gray-300 rounded-lg"
+                        >
+                            <thead
+                                class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white"
+                            >
+                                <tr>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Name
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Relationship
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Status
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    v-for="(companion, index) in companions"
+                                    :key="index"
+                                    class="bg-white border-b hover:bg-gray-100"
+                                >
+                                    <td class="py-3 px-4 text-gray-700">
+                                        {{ companion.name }}
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-700">
+                                        {{ companion.relationship }}
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <span
+                                            class="py-1 px-3 rounded-full text-xs font-semibold capitalize"
+                                            :class="{
+                                                'bg-yellow-100 text-yellow-600':
+                                                    companion.status ===
+                                                    'Pending',
+                                                'bg-green-100 text-green-600':
+                                                    companion.status ===
+                                                    'Accepted',
+                                                'bg-red-100 text-red-600':
+                                                    companion.status ===
+                                                    'Rejected',
+                                            }"
+                                        >
+                                            {{ companion.status }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-4 flex space-x-2">
+                                        <button
+                                            v-if="
+                                                companion.status === 'Pending'
+                                            "
+                                            class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-sm"
+                                            @click="
+                                                acceptCompanion(companion.id)
+                                            "
+                                        >
+                                            Accept
+                                        </button>
+                                        <button
+                                            v-if="
+                                                companion.status === 'Pending'
+                                            "
+                                            class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded text-sm"
+                                            @click="
+                                                rejectCompanion(companion.id)
+                                            "
+                                        >
+                                            Reject
+                                        </button>
+                                        <span
+                                            v-else
+                                            class="text-gray-500 italic"
+                                        >
+                                            No actions available
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <span v-else>{{ item.status }}</span>
-        </td>
-          <td class="py-2 px-2">
-            <button @click="partner(item.transaction_id)" class="bg-blue-950 hover:bg-red-600 text-white font-bold rounded mt-4">Partners</button>
-          </td>
+        </main>
 
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-    <div class=" w-full overflow-x-auto">
-    <table v-if="showCompanion" class="w-full bg-white border mt-2 border-gray-300">
-      <thead>
-        <tr class="bg-[rgb(59,83,145)] text-white uppercase text-sm">
-          <th class="py-3 px-4 text-left">Name</th>
-          <th class="py-3 px-4 text-left">Relationship</th>
-          <th class="py-3 px-4 text-left">Status</th>
-          <th class="py-3 px-4 text-left">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(items, index) in companions" :key="index" class="border-b text-[15px] text-white bg-blue-500 hover:bg-blue-200 hover:text-blue-500">
-          <td class="py-2 px-2">{{ items.name }}</td>
-          <td class="py-2 px-2">{{ items.relationship }}</td>
-          <td class="py-2 px-2">{{ items.status }}</td>
-          <td class="py-2 px-2 flex">
-            <div v-if="items.status === 'Pending'">
-                <button @click=" acceptCompanion(items.id)" class="bg-red-500 hover:bg-red-600 text-white font-bold mx-1 rounded mt-4">Accept</button>
-                <button @click="rejectCompanion(items.id)" class="bg-red-500 hover:bg-red-600 text-white font-bold rounded mt-4">Decline</button>
-            </div>
-            <span v-else>{{ items.status }}</span>
-        </td>
-
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <Footer />
+    </div>
 </template>
 
 <script>
 import axios from "axios";
-
-
+import Header from "./Header.vue";
+import Footer from "./Footer.vue";
 
 export default {
-    data(){
-        return{
+    components: { Header, Footer },
+
+    data() {
+        return {
             visApplicants: [],
             companions: [],
-            showCompanion:false,
-            
-        }
+            showCompanion: false,
+            userTours: [],
+            currentTours: [],
+            allTours: [],
+        };
     },
-    mounted(){
+    mounted() {
         this.fetchApplications();
+        this.fetchAllTours();
+        this.fetching();
     },
-    methods:{
-        fetchApplications(){
-            axios.get(route("all.fetch_application")).then((res)=>{
-                // console.log(res);
-                this.visApplicants = res.data.applications
-                // console.log(this.visApplicants);
-                status= this.visApplicants.status
-
-                
-                
-            }).catch((err)=>{
-                console.log(err);
-            })
-        },
-
-        accept(id){
-            console.log(id);
-            axios.post(route("accept.applications"), { id: id })
-                .then((response) => {
-                    alert(response.data.message);
-                    this.fetchApplications();
-                    
+    methods: {
+        fetchApplications() {
+            axios
+                .get(route("all.fetch_application"))
+                .then((res) => {
+                    // console.log(res);
+                    this.visApplicants = res.data.applications;
+                    // console.log(this.visApplicants);
+                    status = this.visApplicants.status;
                 })
-                .catch((error) => {
-                    console.error('Error accepting application:', error);
-                    alert('Failed to accept application.'); 
-            });
+                .catch((err) => {
+                    console.log(err);
+                });
         },
 
-        reject(id){
-            console.log(id);
-            axios.post(route("reject.applications"), { id: id })
-                .then((response) => {
-                    alert(response.data.message);
-                    this.fetchApplications();
+        fetchAllTours() {
+            axios
+                .get(route("fetchMyuser.tour"))
+                .then((res) => {
+                    console.log(res);
+                    this.userTours = res.data.tours;
+                    console.log("This is my user tours", this.userTours);
                 })
-                .catch((error) => {
-                    console.error('Error accepting application:', error);
-                    alert('Failed to accept application.'); 
-            });
+                .catch((err) => {
+                    console.log(err);
+                });
         },
 
-         rejectCompanion(id){
+        accept(id) {
             console.log(id);
-            axios.post(route("reject.companions"), { id: id })
-                .then((response) => {
-                    alert(response.data.message);
-                    this.fetchApplications();
-                    this.partner()
-                })
-                .catch((error) => {
-                    console.error('Error accepting application:', error);
-                    alert('Failed to accept application.'); 
-            });
-        },
-
-         acceptCompanion(id){
-            console.log(id);
-            axios.post(route("accept.companions"), { id: id })
+            axios
+                .post(route("accept.applications"), { id: id })
                 .then((response) => {
                     alert(response.data.message);
                     this.fetchApplications();
                 })
                 .catch((error) => {
-                    console.error('Error accepting application:', error);
-                    alert('Failed to accept application.'); 
-            });
+                    console.error("Error accepting application:", error);
+                    alert("Failed to accept application.");
+                });
         },
 
-       partner(id) {
+        fetching() {
+            axios
+                .get(route("tour.fetch"))
+                .then((res) => {
+                    this.allTours = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+
+        reject(id) {
             console.log(id);
-            axios.post(route("user.fetch_companion"), { id: id })
+            axios
+                .post(route("reject.applications"), { id: id })
                 .then((response) => {
-                   if (Array.isArray(response.data.companions)) {
-                            this.companions = [...this.companions, ...response.data.companions]; 
-                            console.log(this.companions);
-                            this.showCompanion = true;
-                        }else {
-                        alert('No companions found for this ID.');
+                    alert(response.data.message);
+                    this.fetchApplications();
+                })
+                .catch((error) => {
+                    console.error("Error accepting application:", error);
+                    alert("Failed to accept application.");
+                });
+        },
+
+        rejectCompanion(id) {
+            console.log(id);
+            axios
+                .post(route("reject.companions"), { id: id })
+                .then((response) => {
+                    alert(response.data.message);
+                    this.fetchApplications();
+                    this.partner();
+                })
+                .catch((error) => {
+                    console.error("Error accepting application:", error);
+                    alert("Failed to accept application.");
+                });
+        },
+
+        acceptCompanion(id) {
+            console.log(id);
+            axios
+                .post(route("accept.companions"), { id: id })
+                .then((response) => {
+                    alert(response.data.message);
+                    this.fetchApplications();
+                })
+                .catch((error) => {
+                    console.error("Error accepting application:", error);
+                    alert("Failed to accept application.");
+                });
+        },
+
+        partner(id) {
+            console.log(id);
+            axios
+                .post(route("user.fetch_companion"), { id: id })
+                .then((response) => {
+                    if (Array.isArray(response.data.companions)) {
+                        this.companions = [
+                            ...this.companions,
+                            ...response.data.companions,
+                        ];
+                        console.log(this.companions);
+                        this.showCompanion = true;
+                    } else {
+                        alert("No companions found for this ID.");
                     }
                 })
                 .catch((error) => {
                     console.log(error);
-                    alert('Failed to fetch companions.');
+                    alert("Failed to fetch companions.");
                 });
-        }
-
-
-
-    }
-
-
-}
+        },
+    },
+};
 </script>

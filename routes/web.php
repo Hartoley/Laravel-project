@@ -113,7 +113,9 @@ Route::post("rejectApplication", [VisaFormController::class, 'rejectApplication'
 Route::post("acceptCompanion", [VisaFormController::class, 'acceptCompanion'])->name("accept.companions");
 Route::post("rejectCompanion", [VisaFormController::class, 'rejectCompanion'])->name("reject.companions");
 Route::post("fetchTour", [TourPackagesController::class, 'fetchTour'])->name("fetch.tour");
+Route::get("fetchAllTours", [TravelPlanController::class, 'fetchAllTours'])->name("fetchMyuser.tour");
 Route::post("createPlan", [TravelPlanController::class, 'createPlan'])->name("travelPlan.create");
+Route::post("uploadPaymentProof", [TravelPlanController::class, 'uploadPaymentProof'])->name("submit.payment.proof");
 Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 Route::post('/pay', [App\Http\Controllers\PaystackController::class, 'redirectToGateway'])->name('pay');
 
