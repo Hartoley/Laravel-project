@@ -74,7 +74,7 @@
                         {{ tour.isPaid ? "Paid" : "Not Paid" }}
                     </span>
                     <div
-                        v-if="tour.paymentStatus === 'Approved'"
+                        v-if="tour.paymentStatus === 'approved'"
                         class="flex justify-between"
                     >
                         <button
@@ -113,6 +113,7 @@
             <p>No tours found. Book a holiday to see your trips here!</p>
         </div>
     </div>
+
     <Footer></Footer>
 </template>
 
@@ -153,6 +154,8 @@ export default {
                         tour.surname || ""
                     }`.trim(),
                     tourImage: matchedTour?.images || this.defaultImage,
+                    boardingDate: matchedTour?.boarding_date,
+                    boardingTime: matchedTour?.boarding_time,
                 };
             });
         },
@@ -228,16 +231,75 @@ export default {
                 });
         },
         downloadTicket(tour) {
-            const doc = new jsPDF();
-            doc.setFontSize(18);
-            doc.text("Tour Ticket", 105, 20, null, null, "center");
-            doc.setFontSize(12);
-            doc.text(`Tour Name: ${tour.tourName}`, 20, 40);
-            doc.text(`Name: ${tour.first_name} ${tour.surname}`, 20, 50);
-            doc.text(`Email: ${tour.email}`, 20, 60);
-            doc.text(`Mobile: ${tour.mobileNum}`, 20, 70);
-            doc.text(`Instructions: ${tour.instructions || "N/A"}`, 20, 80);
-            doc.save(`${tour.tourName}_Ticket.pdf`);
+            const doc = new jsPDF({
+                orientation: "landscape", // Landscape for ticket format
+                unit: "px", // Use pixels for easy sizing
+                format: [300, 700], // Custom size for the ticket
+            });
+
+            // Add background color
+            doc.setFillColor(240, 240, 240);
+            doc.rect(0, 0, 700, 300, "F");
+
+            // Add tour image
+            const imageUrl = `/storage/${tour.tourImage}` || this.defaultImage;
+            const imageWidth = 300;
+            const imageHeight = 200;
+            const imageX = 20;
+            const imageY = 50;
+
+            const addImageCallback = (imageData) => {
+                doc.addImage(
+                    imageData,
+                    "JPEG",
+                    imageX,
+                    imageY,
+                    imageWidth,
+                    imageHeight
+                );
+
+                // Add title and details
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(24);
+                doc.text("You're Going To", 340, 80);
+                doc.setFontSize(28);
+                doc.setTextColor(30, 144, 255); // Dodger Blue
+                doc.text(tour.destination, 340, 110);
+
+                // Add message
+                doc.setFontSize(16);
+                doc.setTextColor(50, 50, 50); // Dark Gray
+                doc.text("Pack Your Bags and Fly With Me!", 340, 140);
+
+                // Passenger Details
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(14);
+                doc.setTextColor(80, 80, 80);
+                doc.text(`Passenger Name: ${tour.customerName}`, 340, 170);
+                doc.text(
+                    `Date: ${new Date(tour.boardingDate).toLocaleDateString()}`,
+                    340,
+                    190
+                );
+                doc.text(
+                    `Boarding Time: ${tour.boardingTime || "N/A"}`,
+                    340,
+                    210
+                );
+
+                doc.save(`${tour.tourName}_Ticket.pdf`);
+            };
+
+            const img = new Image();
+            img.src = imageUrl;
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = imageWidth;
+                canvas.height = imageHeight;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, imageWidth, imageHeight);
+                addImageCallback(canvas.toDataURL("image/jpeg"));
+            };
         },
     },
     mounted() {

@@ -98,7 +98,7 @@
                                         class="text-blue-500 hover:underline"
                                         @click="downloadVisa(item)"
                                     >
-                                        Download Visa
+                                        Download Proof
                                     </button>
                                     <button
                                         v-if="item.status === 'Pending'"
@@ -143,7 +143,7 @@
                     ✖
                 </button>
                 <h2 class="text-xl font-bold mb-4 text-gray-800">
-                    Download Visa
+                    Download Proof
                 </h2>
                 <p class="text-gray-600 mb-4">
                     You are about to download the visa document for
@@ -167,6 +167,238 @@
             class="fixed top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg transition-all"
         >
             <p>{{ toastMessage }}</p>
+        </div>
+
+        <div class="min-h-screen bg-gray-100 py-12 px-6 sm:px-12">
+            <div class="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6">
+                <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
+                    Visa Approval and Delivery Instructions
+                </h1>
+                <div class="text-lg text-gray-700">
+                    <!-- Conditional Section Based on Visa Status -->
+                    <!-- <p class="mb-4">
+                         Congratulations! Your
+                        visa application has been successfully approved. Please
+                        read through the following instructions carefully to
+                        ensure the smooth delivery of your visa and travel
+                        documents. @else Your visa is still under review. We
+                        will notify you once it has been approved. In the
+                        meantime, please ensure all details are accurate and
+                        check back later for updates. @endif
+                    </p> -->
+
+                    <!-- Visa Details Section -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                            1. Visa Approval and Collection
+                        </h2>
+                        <p class="mb-4">
+                            Once your visa has been approved, we will begin
+                            processing your documents for delivery. It is
+                            crucial that the information provided during the
+                            application process, such as your full name,
+                            passport number, and contact details, are accurate
+                            to avoid delays or errors. @else Once approved, we
+                            will begin the processing and shipment of your visa.
+                            Ensure all your details are accurate to avoid
+                            delays.
+                        </p>
+                        <p class="mb-4">
+                            Please ensure you have completed the following steps
+                            before the visa is dispatched:
+                        </p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li class="mb-2">
+                                Confirm your mailing address is correct.
+                            </li>
+                            <li class="mb-2">
+                                Ensure all payment has been settled and
+                                confirmed.
+                            </li>
+                            <li class="mb-2">
+                                Provide any additional documentation if
+                                requested by the consulate.
+                            </li>
+                        </ul>
+                        <p class="mb-4">
+                            If any of the above steps are pending, your visa may
+                            experience a delay in being dispatched. @else Once
+                            your visa is approved, these steps will be necessary
+                            to begin the dispatch process.
+                        </p>
+                    </div>
+
+                    <!-- Waybill and Delivery Information -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                            2. Waybill Information
+                        </h2>
+                        <p class="mb-4">
+                            After the visa approval, we will create a waybill
+                            for the safe delivery of your visa and travel
+                            documents. The waybill will contain your personal
+                            information, including your delivery address and
+                            tracking details. @else Once your visa is approved,
+                            we will prepare the waybill and share tracking
+                            information with you.
+                        </p>
+                        <p class="mb-4">
+                            Please keep the following in mind when receiving
+                            your documents:
+                        </p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li class="mb-2">
+                                Track the shipment using the provided waybill
+                                number.
+                            </li>
+                            <li class="mb-2">
+                                Make sure someone is available to receive the
+                                documents at the specified delivery address.
+                            </li>
+                            <li class="mb-2">
+                                Verify the contents of the package upon arrival.
+                                This should include your visa and any other
+                                documents related to your travel.
+                            </li>
+                        </ul>
+                        <p class="mb-4">
+                            If you are unavailable at the time of delivery, the
+                            courier will attempt to reach you or leave
+                            instructions for re-delivery. @else The waybill and
+                            tracking details will be provided once the visa is
+                            approved.
+                        </p>
+                    </div>
+
+                    <!-- Delivery Address Confirmation -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                            3. Delivery Address Confirmation
+                        </h2>
+                        <p class="mb-4">
+                            It is vital that the address you provide is accurate
+                            and current. If you need to update your delivery
+                            address, please inform us immediately to prevent
+                            delivery issues. The address you provided during the
+                            application process is where your visa will be sent
+                            unless you specify otherwise.
+                        </p>
+                        <p class="mb-4">
+                            If you notice any issues with the address on the
+                            waybill, please contact our customer support team to
+                            rectify the details.
+                        </p>
+                        <p class="mb-4">
+                            You can update your address by contacting us via:
+                        </p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li class="mb-2">Email: support@example.com</li>
+                            <li class="mb-2">Phone: +123-456-7890</li>
+                            <li class="mb-2">
+                                Website:
+                                <a
+                                    href="http://www.example.com"
+                                    class="text-blue-600"
+                                    >www.example.com</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Estimated Delivery Time -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                            4. Estimated Delivery Time
+                        </h2>
+                        <p class="mb-4">
+                            The estimated delivery time for your visa and
+                            documents depends on your location. After dispatch,
+                            it typically takes 5-7 business days for domestic
+                            deliveries and 7-10 business days for international
+                            deliveries.
+                        </p>
+                        <p class="mb-4">
+                            You will receive a tracking number along with a
+                            delivery confirmation once the shipment is
+                            dispatched, allowing you to monitor the delivery
+                            progress.
+                        </p>
+                    </div>
+
+                    <!-- Payment Confirmation -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                            5. Payment Confirmation
+                        </h2>
+                        <p class="mb-4">
+                            Before your visa and documents are shipped, please
+                            ensure that all payments, including visa fees,
+                            courier charges, and any other applicable costs,
+                            have been confirmed.
+                        </p>
+                        <p class="mb-4">
+                            If you have already made a payment, please make sure
+                            to keep your payment receipt for reference. If there
+                            is any issue with the payment, please contact our
+                            support team immediately.
+                        </p>
+                    </div>
+
+                    <!-- Support and Assistance -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                            6. Support and Assistance
+                        </h2>
+                        <p class="mb-4">
+                            If you need assistance at any point during the visa
+                            approval or delivery process, our support team is
+                            available to help. You can reach us via the
+                            following channels:
+                        </p>
+                        <ul class="list-disc pl-5 mb-4">
+                            <li class="mb-2">
+                                Email:
+                                <a
+                                    href="mailto:support@example.com"
+                                    class="text-blue-600"
+                                    >support@example.com</a
+                                >
+                            </li>
+                            <li class="mb-2">Phone: +123-456-7890</li>
+                            <li class="mb-2">
+                                Live Chat: Available on our website at
+                                <a
+                                    href="http://www.example.com"
+                                    class="text-blue-600"
+                                    >www.example.com</a
+                                >
+                            </li>
+                        </ul>
+                        <p class="mb-4">
+                            Our team is ready to assist you with any concerns or
+                            questions. We strive to make your visa application
+                            and delivery process as smooth as possible.
+                        </p>
+                    </div>
+
+                    <!-- Final Reminder -->
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+                            7. Final Reminder
+                        </h2>
+                        <p class="mb-4">
+                            Please keep all your travel documents, including the
+                            visa, safe and secure. Double-check the details to
+                            ensure everything is correct before your trip.
+                        </p>
+                        <p class="mb-4">
+                            If you have any further questions or require
+                            assistance, don't hesitate to contact us. We wish
+                            you a safe and pleasant journey!
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <Footer />

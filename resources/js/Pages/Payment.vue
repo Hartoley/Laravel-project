@@ -21,11 +21,11 @@
                 </p>
                 <p>
                     <span class="font-semibold">Account Number:</span>
-                    0248825808
+                    2098412817
                 </p>
                 <p>
-                    <span class="font-semibold">Bank Name:</span> Guaranty Trust
-                    Bank (GTB)
+                    <span class="font-semibold">Bank Name:</span> United Bank Of
+                    Africa (UBA)
                 </p>
                 <p class="mt-4 text-gray-600">
                     After payments use the following contact information below
@@ -48,6 +48,39 @@
                     class="bg-blue-700 text-white py-2 px-4 rounded shadow hover:bg-blue-800"
                 >
                     Pay With Paystack
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto p-6 bg-gray-100 rounded-md shadow-md mt-8">
+        <h2 class="text-2xl font-bold text-blue-700 mb-4">
+            Upload Proof of Payment
+        </h2>
+
+        <div class="space-y-4">
+            <div class="mb-4">
+                <label
+                    for="payment-proof"
+                    class="block text-sm font-medium mb-2"
+                    >Upload Payment Proof</label
+                >
+                <input
+                    type="file"
+                    id="payment-proof"
+                    @change="handleFileUpload($event, tourId)"
+                    class="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-md"
+                />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button
+                    class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-md"
+                    type="submit"
+                    @click="submitPaymentProof(tourId)"
+                >
+                    Submit Proof
                 </button>
             </div>
         </div>
@@ -182,6 +215,7 @@ export default {
     },
     props: {
         email: String,
+        tourName: String,
         id: {
             type: [String, Number],
             required: true,
@@ -189,18 +223,21 @@ export default {
     },
 
     data() {
-        return {};
+        return {
+            fileUploads: {},
+            allTours: [],
+            tourId: this.id,
+        };
     },
+
+    computed: {},
 
     methods: {
         pay() {
             axios
                 .post(route("pay"))
                 .then((response) => {
-                    console.log("Payment URL:", response.data);
-
                     const url = response.data.url;
-
                     if (url) {
                         window.location.href = url;
                     } else {
@@ -215,6 +252,51 @@ export default {
                     alert("Payment initiation failed. Please try again.");
                 });
         },
+
+        fetching() {
+            axios
+                .get(route("tour.fetch"))
+                .then((res) => {
+                    this.allTours = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+
+        handleFileUpload(event, tourId) {
+            const file = event.target.files[0];
+            if (file) {
+                this.fileUploads[tourId] = file;
+            }
+        },
+
+        submitPaymentProof() {
+            const formData = new FormData();
+            formData.append("file", this.fileUploads[this.tourId]);
+            formData.append("tourId", this.tourId);
+
+            console.log(...formData.entries());
+
+            axios
+                .post(route("submit.payment.proof"), formData, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                })
+                .then((response) => {
+                    console.log(
+                        "Payment submitted successfully:",
+                        response.data
+                    );
+                })
+                .catch((error) => {
+                    console.error("Error submitting payment proof:", error);
+                });
+        },
+    },
+
+    mounted() {
+        this.fetching();
+        console.log(this.tourId);
     },
 };
 </script>

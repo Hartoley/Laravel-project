@@ -19,11 +19,11 @@
                         class="tw-[30px] hover:text-blue-500"
                         >BOOK CHEAP FLIGHTS</a
                     >
-                    <a
+                    <!-- <a
                         :href="route('travel')"
                         class="tw-[30px] hover:text-blue-500"
                         >FLIGHTS</a
-                    >
+                    > -->
                     <a
                         :href="route('keenaTravel') + '#holidays'"
                         class="tw-[30px] hover:text-blue-500"

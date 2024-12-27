@@ -20,19 +20,21 @@ class TravelPlanController extends Controller
         $tourName = $request->input('tourName');
         $instructions = $request->input('instructions');
 
-        TravelPlan::create([
+        $travelPlan = TravelPlan::create([
             'first_name' => $first_name,
             'surname' => $surname,
             'email' => $email,
             'mobileNum' => $mobileNum,
             'tourName' => $tourName,
             'instructions' => $instructions,
-
         ]);
+
         return response()->json([
-            'message' => "Travel Package created successfully"
+            'message' => "Travel Package created successfully",
+            'id' => $travelPlan->id,
         ]);
     }
+
 
     public function fetchUserTours()
     {
@@ -101,5 +103,33 @@ class TravelPlanController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function approvePayment(Request $request)
+    {
+        $tour = TravelPlan::find($request->id);
+
+        if ($tour) {
+            $tour->paymentStatus = 'approved';
+            $tour->save();
+
+            return response()->json(['message' => 'Payment approved successfully!']);
+        }
+
+        return response()->json(['message' => 'Tour not found'], 404);
+    }
+
+    public function declinePayment(Request $request)
+    {
+        $tour = TravelPlan::find($request->id);
+
+        if ($tour) {
+            $tour->paymentStatus = 'declined';
+            $tour->save();
+
+            return response()->json(['message' => 'Payment declined successfully!']);
+        }
+
+        return response()->json(['message' => 'Tour not found'], 404);
     }
 }

@@ -221,6 +221,162 @@
             </div>
         </main>
 
+        <div class="min-h-screen flex flex-col bg-gray-50">
+            <main class="flex-1 p-6 mt-[12vh]">
+                <div
+                    class="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6"
+                >
+                    <h1 class="text-2xl font-bold text-gray-800 mb-4">
+                        Visa Applications Management
+                    </h1>
+
+                    <!-- Displaying user tours -->
+                    <div class="overflow-x-auto">
+                        <table
+                            class="w-full text-left border-collapse border border-gray-300 rounded-lg"
+                        >
+                            <thead
+                                class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white"
+                            >
+                                <tr>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Email
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Full Name
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Tour Name
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Status
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Payment Proof
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Actions
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 text-sm uppercase font-semibold"
+                                    >
+                                        Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    v-for="(tour, index) in userTours"
+                                    :key="index"
+                                    class="bg-white border-b hover:bg-gray-100"
+                                >
+                                    <td class="py-3 px-4 text-gray-700">
+                                        {{ tour.email }}
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-700">
+                                        {{ tour.first_name }} {{ tour.surname }}
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-700">
+                                        {{ tour.tourName }}
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <span
+                                            class="py-1 px-3 rounded-full text-xs font-semibold capitalize"
+                                            :class="{
+                                                'bg-yellow-100 text-yellow-600':
+                                                    tour.paymentStatus ===
+                                                    'pending',
+                                                'bg-green-100 text-green-600':
+                                                    tour.paymentStatus ===
+                                                    'approved',
+                                                'bg-red-100 text-red-600':
+                                                    tour.paymentStatus ===
+                                                    'declined',
+                                            }"
+                                        >
+                                            {{ tour.paymentStatus }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <img
+                                            v-if="tour.paymentImage"
+                                            :src="
+                                                '/storage/' + tour.paymentImage
+                                            "
+                                            alt="Payment Proof"
+                                            class="w-16 h-16 object-cover cursor-pointer"
+                                            @click="
+                                                openModal(tour.paymentImage)
+                                            "
+                                        />
+                                        <span
+                                            v-else
+                                            class="text-gray-500 italic"
+                                            >No proof uploaded</span
+                                        >
+                                    </td>
+                                    <td class="py-3 px-4 flex space-x-2">
+                                        <button
+                                            v-if="
+                                                tour.paymentStatus === 'pending'
+                                            "
+                                            class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-sm"
+                                            @click="approvePayment(tour.id)"
+                                        >
+                                            Approve
+                                        </button>
+                                        <button
+                                            v-if="
+                                                tour.paymentStatus === 'pending'
+                                            "
+                                            class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded text-sm"
+                                            @click="declinePayment(tour.id)"
+                                        >
+                                            Decline
+                                        </button>
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-700">
+                                        <span v-if="matchedTour(tour)">
+                                            {{ matchedTour(tour).price }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Modal for full image view -->
+                    <div
+                        v-if="isModalOpen"
+                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                        @click="closeModal"
+                    >
+                        <div
+                            class="flex justify-center items-center max-w-full max-h-full"
+                        >
+                            <img
+                                :src="modalImage"
+                                alt="Full View"
+                                class="max-w-[90%] max-h-[90%] object-contain"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
         <Footer />
     </div>
 </template>
@@ -241,6 +397,8 @@ export default {
             userTours: [],
             currentTours: [],
             allTours: [],
+            isModalOpen: false,
+            modalImage: "",
         };
     },
     mounted() {
@@ -249,6 +407,15 @@ export default {
         this.fetching();
     },
     methods: {
+        openModal(image) {
+            this.modalImage = "/storage/" + image;
+            this.isModalOpen = true;
+        },
+
+        closeModal() {
+            this.isModalOpen = false;
+            this.modalImage = "";
+        },
         fetchApplications() {
             axios
                 .get(route("all.fetch_application"))
@@ -363,6 +530,39 @@ export default {
                 .catch((error) => {
                     console.log(error);
                     alert("Failed to fetch companions.");
+                });
+        },
+
+        matchedTour(tour) {
+            const matched = this.allTours.find(
+                (item) => item.tour_name === tour.tourName
+            );
+            return matched ? matched : null;
+        },
+
+        approvePayment(tourId) {
+            axios
+                .post(route("approve.payment"), { id: tourId })
+                .then((response) => {
+                    alert(response.data.message);
+                    this.fetchAllTours();
+                })
+                .catch((error) => {
+                    console.error("Error approving payment:", error);
+                    alert("Failed to approve payment.");
+                });
+        },
+
+        declinePayment(tourId) {
+            axios
+                .post(route("decline.payment"), { id: tourId })
+                .then((response) => {
+                    alert(response.data.message);
+                    this.fetchAllTours();
+                })
+                .catch((error) => {
+                    console.error("Error declining payment:", error);
+                    alert("Failed to decline payment.");
                 });
         },
     },

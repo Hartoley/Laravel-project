@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div
+        <!-- <div
             class="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 cursor-pointer"
             @click="prevSlide"
         >
@@ -61,8 +61,8 @@
             >
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
             </svg>
-        </div>
-        <div
+        </div> -->
+        <!-- <div
             class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 cursor-pointer"
             @click="nextSlide"
         >
@@ -74,7 +74,7 @@
                     d="M8.59 16.59L10 18 16 12 10 6 8.59 7.41 13.17 12z"
                 ></path>
             </svg>
-        </div>
+        </div> -->
     </div>
     <div
         class="w-full flex justify-center items-center h-[70vh] bg-[rgb(237,233,238)]"
@@ -138,6 +138,33 @@
         </div>
     </div>
     <div
+        v-if="loading"
+        class="absolute inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50"
+    >
+        <div class="text-white text-xl animate-spin">
+            <svg
+                class="w-12 h-12 text-blue-500"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                ></circle>
+                <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 2.577 1.004 4.911 2.635 6.635l1.365-1.344z"
+                ></path>
+            </svg>
+        </div>
+    </div>
+    <div
         id="holidays"
         class="w-full flex flex-col items-center justify-center bg-gradient-to-t from-[rgb(0,83,176)] via-[rgb(0,98,242)] to-[rgb(112,194,239)] py-12 px-6"
     >
@@ -151,7 +178,7 @@
                 @click="bookTour(tour.id)"
                 v-for="(tour, index) in tours"
                 :key="index"
-                class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-300 hover:scale-105 border border-gray-200"
+                class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-10s00 hover:scale-105 border border-gray-200"
             >
                 <!-- Image Section -->
                 <img
@@ -173,7 +200,6 @@
                     </p>
                 </div>
 
-                <!-- Button Section -->
                 <div class="p-4 pt-0">
                     <button
                         class="w-full py-2 text-center text-white bg-blue-500 hover:bg-blue-600 rounded-md transition"
@@ -253,6 +279,7 @@ export default {
             ],
             currentIndex: 0,
             slideInterval: null,
+            loading: false,
         };
     },
     methods: {
@@ -273,20 +300,23 @@ export default {
             }%)`;
         },
         fetching() {
+            this.loading = true;
             axios
                 .get(route("tour.fetch"))
                 .then((res) => {
                     console.log(res);
                     this.tours = res.data;
+                    this.loading = false;
                 })
                 .catch((err) => {
                     console.log(err);
+                    this.loading = false;
                 });
         },
         startAutoSlide() {
             this.slideInterval = setInterval(() => {
                 this.nextSlide();
-            }, 1500);
+            }, 6500);
         },
         stopAutoSlide() {
             clearInterval(this.slideInterval);

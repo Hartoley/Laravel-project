@@ -58,10 +58,11 @@ Route::get("/keenaTravel", function () {
     return Inertia::render("Intro");
 })->name('keenaTravel');
 
-Route::get("/makePayment/{id}", function ($id) {
+Route::get("/makePayment/{tourName}/{id}", function ($tourName, $id) {
     $user = Auth::user();
     return Inertia::render("Payment", [
         'id' => (int)$id,
+        'tourName' => $tourName,
         'email' => $user ? $user->email : null,
     ]);
 })->middleware(['auth'])->name(name: "keena.travel");
@@ -115,6 +116,9 @@ Route::post("rejectCompanion", [VisaFormController::class, 'rejectCompanion'])->
 Route::post("fetchTour", [TourPackagesController::class, 'fetchTour'])->name("fetch.tour");
 Route::get("fetchAllTours", [TravelPlanController::class, 'fetchAllTours'])->name("fetchMyuser.tour");
 Route::post("createPlan", [TravelPlanController::class, 'createPlan'])->name("travelPlan.create");
+Route::post('/approve/payment', [TravelPlanController::class, 'approvePayment'])->name('approve.payment');
+Route::post('/decline/payment', [TravelPlanController::class, 'declinePayment'])->name('decline.payment');
+
 Route::post("uploadPaymentProof", [TravelPlanController::class, 'uploadPaymentProof'])->name("submit.payment.proof");
 Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 Route::post('/pay', [App\Http\Controllers\PaystackController::class, 'redirectToGateway'])->name('pay');

@@ -35,6 +35,8 @@ class TourPackagesController extends Controller
             'tour_name' => $name,
             'tour_prices' => $prices,
             'images' => $filePath,
+            'boarding_date' => $request->boarding_date,
+            'boarding_time' => $request->boarding_time,
 
         ]);
         return response()->json(['message' => "Package created successfully"]);
