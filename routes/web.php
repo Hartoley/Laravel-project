@@ -58,6 +58,10 @@ Route::get("/keenaTravel", function () {
     return Inertia::render("Intro");
 })->name('keenaTravel');
 
+Route::get("manageTours", function () {
+    return Inertia::render("ManagwT");
+})->name('ManagwT');
+
 Route::get("/makePayment/{tourName}/{id}", function ($tourName, $id) {
     $user = Auth::user();
     return Inertia::render("Payment", [
@@ -82,7 +86,7 @@ Route::get("/bookTour/{id}", function ($id) {
 
 Route::get("/visaAdmin", function () {
     return Inertia::render("VisaAdmin");
-});
+})->name('visaAdmin');
 
 Route::get("/cheapFligths", function () {
     return Inertia::render("BookCheap");

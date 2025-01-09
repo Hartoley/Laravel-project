@@ -146,12 +146,14 @@ export default {
                             setTimeout(() => {
                                 console.log("Yes I am a user");
 
-                                // window.location.href = "/keenaTravel";
+                                window.location.href = "/keenaTravel";
                             }, 1000);
-                        } else {
-                            console.log(
-                                "Unauthorized access: Role is not User"
-                            );
+                        } else if (response.data.user.role === "Admin") {
+                            setTimeout(() => {
+                                console.log("Yes I am an admin");
+
+                                window.location.href = "/adminTravel";
+                            }, 1000);
                         }
                     } else {
                         console.log("User data not found in response");

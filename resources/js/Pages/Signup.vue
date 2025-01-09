@@ -118,21 +118,30 @@ export default {
         togglePassword() {
             this.showPassword = !this.showPassword;
         },
+
         signup() {
             this.loading = true;
-            let data = {
+            const data = {
                 email: this.email,
-                surname: this.surname,
-                first_name: this.first_name,
+                name: `${this.first_name} ${this.surname}`,
                 password: this.password,
+                password_confirmation: this.password,
             };
 
             axios
-                .post(route("register", data))
+                .post(route("users.create"), data)
                 .then((response) => {
-                    alert("User Data submitted successfully");
-                    console.log("User Data submitted successfully:", response);
+                    alert(response.data.message);
+                    console.log(
+                        "User Data submitted successfully:",
+                        response.data
+                    );
                     this.email = "";
+                    setTimeout(() => {
+                        console.log("Yes I am a user");
+
+                        window.location.href = "/signin";
+                    }, 1000);
                     this.surname = "";
                     this.first_name = "";
                     this.password = "";
@@ -140,8 +149,9 @@ export default {
                 .catch((error) => {
                     console.error(
                         "There was an error submitting the form:",
-                        error
+                        error.response.data
                     );
+                    alert(error.response.data.message);
                 })
                 .finally(() => {
                     this.loading = false;

@@ -1,5 +1,5 @@
 <template>
-    <Header></Header>
+    <Adminheader />
     <form
         @submit.prevent="createTour"
         enctype="multipart/form-data"
@@ -136,11 +136,13 @@
 <script>
 import axios from "axios";
 import Header from "./Header.vue";
+import Adminheader from "./Adminheader.vue";
 import Footer from "./Footer.vue";
 
 export default {
     components: {
         Header,
+        Adminheader,
         Footer,
     },
     data() {

@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen flex flex-col bg-gray-50">
-        <Header />
+        <Adminheader />
 
         <main class="flex-1 p-6 mt-[12vh]">
             <div class="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6">
@@ -227,7 +227,7 @@
                     class="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6"
                 >
                     <h1 class="text-2xl font-bold text-gray-800 mb-4">
-                        Visa Applications Management
+                        Tours Applications Management
                     </h1>
 
                     <!-- Displaying user tours -->
@@ -385,9 +385,10 @@
 import axios from "axios";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
+import Adminheader from "./Adminheader.vue";
 
 export default {
-    components: { Header, Footer },
+    components: { Adminheader, Header, Footer },
 
     data() {
         return {
