@@ -175,10 +175,10 @@
             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full max-w-7xl"
         >
             <div
-                @click="bookTour(tour.id)"
                 v-for="(tour, index) in tours"
                 :key="index"
-                class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-10s00 hover:scale-105 border border-gray-200"
+                class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-300 hover:scale-105 border border-gray-200"
+                :class="{ 'opacity-90': isExpired(tour.boarding_date) }"
             >
                 <!-- Image Section -->
                 <img
@@ -198,11 +198,25 @@
                     <p class="text-xl font-bold text-blue-600" id="tours1">
                         {{ tour.tour_prices }}
                     </p>
+                    <p
+                        v-if="isExpired(tour.boarding_date)"
+                        class="text-red-500 font-semibold mt-2"
+                    >
+                        Expired
+                    </p>
                 </div>
 
+                <!-- Button Section -->
                 <div class="p-4 pt-0">
                     <button
-                        class="w-full py-2 text-center text-white bg-blue-500 hover:bg-blue-600 rounded-md transition"
+                        :disabled="isExpired(tour.boarding_date)"
+                        @click="bookTour(tour.id)"
+                        class="w-full py-2 text-center text-white rounded-md transition"
+                        :class="
+                            isExpired(tour.boarding_date)
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-blue-500 hover:bg-blue-600'
+                        "
                     >
                         Book Tour
                     </button>
@@ -283,6 +297,11 @@ export default {
         };
     },
     methods: {
+        isExpired(boardingDate) {
+            const currentDate = new Date();
+            const tourDate = new Date(boardingDate);
+            return tourDate < currentDate;
+        },
         prevSlide() {
             this.currentIndex =
                 (this.currentIndex - 1 + this.images.length) %

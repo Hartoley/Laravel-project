@@ -155,7 +155,6 @@ export default {
             boardingDate: "",
             boardingTime: "",
             img: null,
-            tours: JSON.parse(localStorage.getItem("Tours")) || [],
             loading: false,
         };
     },
@@ -166,6 +165,21 @@ export default {
         },
         createTour() {
             this.loading = true;
+
+            // Validation: Check for missing fields
+            if (
+                !this.tourName ||
+                !this.price ||
+                !this.destination ||
+                !this.boardingDate ||
+                !this.boardingTime ||
+                !this.img
+            ) {
+                alert("Please fill in all required fields.");
+                this.loading = false; // Reset loading state
+                return;
+            }
+
             let formData = new FormData();
             formData.append("tour_name", this.tourName);
             formData.append("tour_prices", this.price);
@@ -176,14 +190,30 @@ export default {
             formData.append("boarding_time", this.boardingTime);
             formData.append("images", this.img);
 
+            const currentDate = new Date();
+            const boardingDate = new Date(this.boardingDate);
+
+            // Validate boarding date
+            if (boardingDate - currentDate < 24 * 60 * 60 * 1000) {
+                alert(
+                    "Boarding date must be more than 24 hours from the current date."
+                );
+                this.loading = false; // Reset loading state
+                return;
+            }
+
             axios
                 .post(route("tour.create"), formData)
                 .then((res) => {
                     console.log(res);
                     this.loading = false;
+                    alert("Tour created successfully!");
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err);
+                    alert(
+                        "An error occurred while creating the tour. Please try again."
+                    );
                     this.loading = false;
                 });
         },

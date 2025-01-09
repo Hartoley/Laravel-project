@@ -3,7 +3,10 @@
         <Adminheader />
 
         <main class="flex-1 p-6 mt-[12vh]">
-            <div class="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6">
+            <div
+                id="visaApplication"
+                class="max-w-7xl mx-auto bg-white shadow-md rounded-lg p-6"
+            >
                 <h1 class="text-2xl font-bold text-gray-800 mb-4">
                     Visa Applications Management
                 </h1>

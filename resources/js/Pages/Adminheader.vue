@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="bg-[#003399] h-[10vh] fixed top-0 left-0 w-full z-10 text-white border-b border-gray-200"
+        class="bg-[#003399] h-[10vh] flex items-center fixed top-0 left-0 w-full z-10 text-white border-b border-gray-200"
     >
         <div
             class="container flex items-center justify-between h-16 px-6 mx-auto"
@@ -35,7 +35,7 @@
                         >MANAGE HOLIDAYS</a
                     >
                     <a
-                        :href="route('travel')"
+                        :href="route('visaAdmin') + '#visaApplication'"
                         class="tw-[30px] hover:text-blue-500"
                         >VISA SERVICES</a
                     >
@@ -64,10 +64,10 @@
                     </svg>
                 </div>
                 <a
-                    href="#"
+                    href="whatsapp://send"
                     class="inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-bold rounded-full hover:bg-blue-700"
                 >
-                    Get WhatsApp
+                    Open WhatsApp
                 </a>
             </div>
         </div>

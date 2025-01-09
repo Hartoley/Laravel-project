@@ -111,6 +111,8 @@ Route::post("login_user", [LoginUserController::class, 'LoginUser'])->name("user
 Route::post("signIn", [LoginUserController::class, 'signIn'])->name("users.signin");
 Route::post("createTour", [TourPackagesController::class, 'createTour'])->name("tour.create");
 Route::get("fetchTour", [TourPackagesController::class, 'fetchPackages'])->name("tour.fetch");
+Route::post("updateTour", [TourPackagesController::class, 'updateTour'])->name("tour.update");
+Route::post("deleteTour/{id}", [TourPackagesController::class, 'deleteTour'])->name("tour.delete");
 Route::get("fetchUserTours", [TravelPlanController::class, 'fetchUserTours'])->name("usertour.fetch");
 Route::get("fetchCompanions", [TourPackagesController::class, 'fetchCompanions'])->name("fetch.Companions");
 Route::post("acceptApplication", [VisaFormController::class, 'acceptApplication'])->name("accept.applications");

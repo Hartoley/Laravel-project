@@ -11,6 +11,23 @@
 
             <form @submit.prevent="visaForm" class="mt-8 space-y-6">
                 <div>
+                    <select
+                        v-model="selectedCountry"
+                        class="block w-full mt-2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                        <option
+                            v-for="country in filteredCountries"
+                            :key="country.code"
+                            :value="country.name"
+                        >
+                            {{ country.name }}
+                        </option>
+                    </select>
+                    <p class="mt-2 text-gray-600">
+                        Selected Country: {{ selectedCountry }}
+                    </p>
+                </div>
+                <div>
                     <label
                         for="email"
                         class="block text-sm font-medium text-gray-700"
@@ -520,9 +537,26 @@ export default {
             travel_companion_no: false,
             companion_firstName: "",
             companion_relationship: "",
+            countries: [],
+            searchQuery: "",
+            selectedCountry: null,
         };
     },
     methods: {
+        async fetchCountries() {
+            try {
+                const response = await fetch(
+                    "https://countriesnow.space/api/v0.1/countries"
+                );
+                const data = await response.json();
+                this.countries = data.data.map((country) => ({
+                    name: country.country,
+                    code: country.iso2 || country.iso3 || country.country,
+                }));
+            } catch (error) {
+                console.error("Error fetching countries:", error);
+            }
+        },
         companions() {
             this.travel_companion.push({
                 firstName: this.companion_firstName,
@@ -546,6 +580,7 @@ export default {
                 arrival: this.arrival,
                 departure: this.departure,
                 travel_companion: this.travel_companion,
+                // selectedCountry: this.selectedCountry,
             };
 
             console.log(data);
@@ -588,6 +623,20 @@ export default {
     },
     mounted() {
         this.fetching();
+        this.fetchCountries();
+    },
+
+    computed: {
+        filteredCountries() {
+            if (!this.searchQuery) {
+                return this.countries;
+            }
+            return this.countries.filter((country) =>
+                country.name
+                    .toLowerCase()
+                    .includes(this.searchQuery.toLowerCase())
+            );
+        },
     },
 };
 </script>

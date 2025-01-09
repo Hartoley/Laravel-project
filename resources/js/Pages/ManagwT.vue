@@ -49,7 +49,11 @@
                 <!-- Image Section -->
                 <img
                     class="w-full h-48 object-cover"
-                    :src="'/storage/' + tour.images"
+                    :src="
+                        tour.images
+                            ? '/storage/' + tour.images
+                            : '/placeholder.jpg'
+                    "
                     alt="Tour Image"
                 />
 
@@ -67,7 +71,15 @@
                 </div>
 
                 <!-- Action Buttons -->
+
                 <div class="p-4 pt-0 flex space-x-4">
+                    <button
+                        v-if="isPastBoardingDate(tour.boarding_date)"
+                        class="w-[15vw] py-2 mt-2 text-center text-white bg-yellow-500 hover:bg-yellow-600 rounded-md transition"
+                        @click="showNotice(tour)"
+                    >
+                        Notice
+                    </button>
                     <button
                         class="w-full py-2 text-center text-white bg-green-500 hover:bg-green-600 rounded-md transition"
                         @click="editTour(tour)"
@@ -75,10 +87,32 @@
                         Edit
                     </button>
                     <button
-                        class="w-full py-2 text-center text-white bg-red-500 hover:bg-red-600 rounded-md transition"
+                        class="w-full py-2 text-center text-white bg-red-500 hover:bg-red-600 rounded-md transition flex items-center justify-center"
                         @click="deleteTour(tour.id)"
+                        :disabled="deleting"
                     >
-                        Delete
+                        <svg
+                            v-if="deleting"
+                            class="animate-spin h-5 w-5 text-white mr-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle
+                                class="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                stroke-width="4"
+                            ></circle>
+                            <path
+                                class="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v8H4zm2 5.291A7.969 7.969 0 014 12h6v5.291z"
+                            ></path>
+                        </svg>
+                        <span v-if="!deleting">Delete</span>
                     </button>
                 </div>
             </div>
@@ -88,10 +122,12 @@
     <!-- Edit Modal -->
     <div
         v-if="isEditing"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
     >
-        <div class="bg-white rounded-lg shadow-md p-6 w-[70%] max-w-lg">
-            <h2 class="text-2xl font-bold mb-4">Edit Tour</h2>
+        <div
+            class="bg-white rounded-lg shadow-md p-6 w-full max-w-3xl overflow-y-auto max-h-[90vh]"
+        >
+            <h2 class="text-2xl font-bold mb-2">Edit Tour</h2>
             <form @submit.prevent="updateTour">
                 <div class="mb-4">
                     <label class="block font-semibold mb-2">Tour Name</label>
@@ -119,12 +155,87 @@
                         required
                     />
                 </div>
+                <div class="mb-4">
+                    <label class="block font-semibold mb-2">Destination</label>
+                    <input
+                        type="text"
+                        v-model="currentTour.destination"
+                        class="w-full border rounded-md px-4 py-2"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <label class="block font-semibold mb-2"
+                        >Tour Duration (in days)</label
+                    >
+                    <input
+                        type="text"
+                        v-model="currentTour.tourDuration"
+                        class="w-full border rounded-md px-4 py-2"
+                        min="1"
+                        required
+                    />
+                </div>
+
+                <div class="mb-4">
+                    <label class="block font-semibold mb-2"
+                        >Boarding Date</label
+                    >
+                    <input
+                        type="date"
+                        v-model="currentTour.boarding_date"
+                        class="w-full border rounded-md px-4 py-2"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <label class="block font-semibold mb-2"
+                        >Boarding Time</label
+                    >
+                    <input
+                        type="time"
+                        v-model="currentTour.boarding_time"
+                        class="w-full border rounded-md px-4 py-2"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <label class="block font-semibold mb-2">Image</label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        @change="pickfile($event)"
+                        class="w-full border rounded-md px-4 py-2"
+                    />
+                </div>
                 <div class="flex space-x-4">
                     <button
                         type="submit"
-                        class="w-full py-2 text-center text-white bg-blue-500 hover:bg-blue-600 rounded-md transition"
+                        class="w-full py-2 text-center text-white bg-blue-500 hover:bg-blue-600 rounded-md transition flex items-center justify-center"
+                        :disabled="updating"
                     >
-                        Update
+                        <svg
+                            v-if="updating"
+                            class="animate-spin h-5 w-5 text-white mr-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle
+                                class="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                stroke-width="4"
+                            ></circle>
+                            <path
+                                class="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v8H4zm2 5.291A7.969 7.969 0 014 12h6v5.291z"
+                            ></path>
+                        </svg>
+                        <span v-if="!updating">Update</span>
                     </button>
                     <button
                         type="button"
@@ -137,6 +248,7 @@
             </form>
         </div>
     </div>
+
     <Footer />
 </template>
 
@@ -157,10 +269,36 @@ export default {
             tours: [],
             loading: false,
             isEditing: false,
-            currentTour: {},
+            deleting: false, // For delete loader
+            updating: false, // For update loader
+            id: "",
+            img: null,
+
+            currentTour: {
+                tour_name: "",
+                tour_decs: "",
+                tour_prices: "",
+                destination: "",
+                tourDuration: "",
+                boarding_date: "",
+                boarding_time: "",
+                img: null,
+            },
         };
     },
+
     methods: {
+        isPastBoardingDate(boardingDate) {
+            const today = new Date();
+            return new Date(boardingDate) < today;
+        },
+
+        showNotice(tour) {
+            alert(
+                `Notice: The boarding date for ${tour.tour_name} has passed.`
+            );
+        },
+
         fetching() {
             this.loading = true;
             axios
@@ -176,8 +314,10 @@ export default {
         },
         deleteTour(id) {
             if (confirm("Are you sure you want to delete this tour?")) {
+                this.deleting = true;
+
                 axios
-                    .delete(route("tour.delete", id))
+                    .post(route("tour.delete", id))
                     .then((res) => {
                         alert("Tour deleted successfully!");
                         this.fetching();
@@ -185,19 +325,51 @@ export default {
                     .catch((err) => {
                         console.error(err);
                         alert("Failed to delete tour.");
+                    })
+                    .finally(() => {
+                        this.deleting = false;
                     });
             }
         },
+
         editTour(tour) {
             this.currentTour = { ...tour };
             this.isEditing = true;
         },
+
+        pickfile(e) {
+            console.log(e.target.files[0]);
+            this.img = e.target.files[0];
+        },
+
         updateTour() {
+            const currentDate = new Date();
+            const boardingDate = new Date(this.currentTour.boarding_date);
+
+            if (boardingDate - currentDate < 24 * 60 * 60 * 1000) {
+                alert(
+                    "Boarding date must be more than 24 hours from the current date."
+                );
+                return;
+            }
+
+            this.updating = true;
+            const formData = new FormData();
+
+            for (const key in this.currentTour) {
+                formData.append(key, this.currentTour[key]);
+            }
+
+            if (this.img) {
+                formData.append("images", this.img);
+            } else {
+                formData.append("images", this.currentTour.images);
+            }
+
             axios
-                .put(
-                    route("tour.update", this.currentTour.id),
-                    this.currentTour
-                )
+                .post(route("tour.update"), formData, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                })
                 .then((res) => {
                     alert("Tour updated successfully!");
                     this.isEditing = false;
@@ -206,6 +378,9 @@ export default {
                 .catch((err) => {
                     console.error(err);
                     alert("Failed to update tour.");
+                })
+                .finally(() => {
+                    this.updating = false;
                 });
         },
     },
