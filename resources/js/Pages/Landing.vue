@@ -1,49 +1,24 @@
 <template>
     <Header></Header>
     <div class="container mx-auto mt-[15vh] px-4">
-        <h1
-            class="text-3xl sm:text-4xl font-bold text-center mb-10 text-blue-600"
-        >
+        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-blue-600">
             My Booked Tours
         </h1>
 
         <div v-if="loading" class="flex justify-center items-center h-[50vh]">
-            <svg
-                class="animate-spin h-10 w-10 text-blue-600"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-            >
-                <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                ></circle>
-                <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8H4z"
-                ></path>
+            <svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
             </svg>
         </div>
 
-        <div
-            v-if="!loading && enrichedTours.length > 0"
-            class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6"
-        >
-            <div
-                v-for="(tour, index) in enrichedTours"
-                :key="index"
-                class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform hover:scale-105"
-            >
-                <img
-                    :src="'/storage/' + tour.tourImage"
-                    :alt="`Image of ${tour.tourName}`"
-                    class="w-full h-48 object-cover"
-                />
+        <div v-if="!loading && enrichedTours.length > 0"
+            class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-6">
+            <div v-for="(tour, index) in enrichedTours" :key="index"
+                class="bg-white shadow-lg rounded-lg overflow-hidden transition-transform hover:scale-105">
+                <img :src="'/storage/' + tour.tourImage" :alt="`Image of ${tour.tourName}`"
+                    class="w-full h-48 object-cover" />
                 <div class="p-4">
                     <h3 class="text-lg font-bold text-blue-600 mb-2">
                         {{ tour.tourName }}
@@ -63,45 +38,37 @@
                     </p>
                 </div>
                 <div class="p-4 bg-gray-100 flex flex-col gap-2">
-                    <span
-                        class="px-3 py-1 text-sm font-bold rounded self-start"
-                        :class="
-                            tour.isPaid
-                                ? 'bg-green-500 text-white'
-                                : 'bg-red-500 text-white'
-                        "
-                    >
+                    <span class="px-3 py-1 text-sm font-bold rounded self-start" :class="tour.isPaid
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
+                        ">
                         {{ tour.isPaid ? "Paid" : "Not Paid" }}
                     </span>
-                    <div
-                        v-if="tour.paymentStatus === 'approved'"
-                        class="flex justify-between"
-                    >
-                        <button
-                            @click="downloadTicket(tour)"
-                            class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded"
-                        >
+                    <div v-if="tour.paymentStatus === 'approved'" class="flex justify-between">
+                        <button @click="downloadTicket(tour)"
+                            class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded">
                             Download Ticket
                         </button>
                     </div>
+                    <div v-if="tour.paymentStatus === 'declined'" class="text-red-500 text-sm text-center">
+                        Your payment has been declined. Please contact our support team via
+                        <a href="https://wa.me/2348063123877?text=Hello+I+need+assistance+with+my+payment"
+                            class="text-blue-500 hover:underline" target="_blank">
+                            WhatsApp
+                        </a>
+                        for further assistance and review.
+                    </div>
+
                     <div v-else class="text-red-500 text-sm text-center">
                         Payment not approved yet. Kindly wait while your payment
                         is approved.
                     </div>
                     <div v-if="!tour.isPaid">
-                        <label class="text-sm text-gray-600 mb-1 block"
-                            >Upload Payment Proof:</label
-                        >
-                        <input
-                            type="file"
-                            accept="image/*"
-                            @change="handleFileUpload($event, tour.id)"
-                            class="text-sm mb-2"
-                        />
-                        <button
-                            @click="submitPaymentProof(tour.id)"
-                            class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded"
-                        >
+                        <label class="text-sm text-gray-600 mb-1 block">Upload Payment Proof:</label>
+                        <input type="file" accept="image/*" @change="handleFileUpload($event, tour.id)"
+                            class="text-sm mb-2" />
+                        <button @click="submitPaymentProof(tour.id)"
+                            class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded">
                             Submit
                         </button>
                     </div>
@@ -150,9 +117,8 @@ export default {
                     tourDuration: matchedTour?.tourDuration || "N/A",
                     instructions:
                         tour.instructions || matchedTour?.instructions || "N/A",
-                    customerName: `${tour.first_name || ""} ${
-                        tour.surname || ""
-                    }`.trim(),
+                    customerName: `${tour.first_name || ""} ${tour.surname || ""
+                        }`.trim(),
                     tourImage: matchedTour?.images || this.defaultImage,
                     boardingDate: matchedTour?.boarding_date,
                     boardingTime: matchedTour?.boarding_time,
@@ -218,7 +184,7 @@ export default {
                 .then((res) => {
                     alert(
                         res.data.message ||
-                            "Payment proof submitted successfully!"
+                        "Payment proof submitted successfully!"
                     );
                     this.fetchTours();
                 })
@@ -226,7 +192,7 @@ export default {
                     console.error("Error response:", err.response?.data);
                     alert(
                         err.response?.data?.message ||
-                            "Failed to submit payment proof."
+                        "Failed to submit payment proof."
                     );
                 });
         },

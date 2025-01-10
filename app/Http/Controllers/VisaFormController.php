@@ -16,6 +16,7 @@ class VisaFormController extends Controller
     {
         $email = $request->input('email');
         $surname = $request->input('surname');
+        $selectedCountry = $request->input('selectedCountry');
         $first_name = $request->input('first_name');
         $residence = $request->input('residence');
         $marital_status = $request->input('marital_status');
@@ -43,6 +44,7 @@ class VisaFormController extends Controller
         VisaForm::create([
             'email' => $email,
             'surname' => $surname,
+            'selectedCountry' => $selectedCountry,
             'first_name' => $first_name,
             'residence' => $residence,
             'marital_status' => $marital_status,

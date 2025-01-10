@@ -1,7 +1,9 @@
 <template>
     <div>
         <Header> </Header>
-
+         <div v-if="isLoading" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+                <div class="text-white text-lg">Loading...</div>
+            </div>
         <div
             class="max-w-3xl flex items-center justify-center flex-col border-[0.5px] border-[#314b87] mx-auto py-12 px-4 sm:px-6 mt-[12vw] mb-[2vw] lg:px-8"
         >
@@ -540,9 +542,16 @@ export default {
             countries: [],
             searchQuery: "",
             selectedCountry: null,
+            isLoading: false,
+              selectedApplication: null,
+    showModal: false,
         };
     },
     methods: {
+         showApplicationDetails(application) {
+    this.selectedApplication = application;
+    this.showModal = true;
+  },
         async fetchCountries() {
             try {
                 const response = await fetch(
@@ -568,6 +577,7 @@ export default {
             (this.companion_firstName = ""), (this.companion_relationship = "");
         },
         visaForm() {
+            this.isLoading = true;
             let data = {
                 email: this.email,
                 surname: this.surname,
@@ -580,7 +590,7 @@ export default {
                 arrival: this.arrival,
                 departure: this.departure,
                 travel_companion: this.travel_companion,
-                // selectedCountry: this.selectedCountry,
+                selectedCountry: this.selectedCountry,
             };
 
             console.log(data);
@@ -600,12 +610,19 @@ export default {
                     this.arrival = "";
                     this.departure = "";
                     this.travel_companion = "";
+                    this.isLoading = false;
+                    this.selectedCountry = null;
                 })
                 .catch((error) => {
                     console.error(
                         "There was an error submitting the form:",
                         error
                     );
+                     const errorMessage =
+                error.response?.data?.message || "An unexpected error occurred.";
+            alert(`Submission failed: ${errorMessage}`);
+                        this.isLoading = false;
+
                 });
         },
 
