@@ -1,25 +1,16 @@
 <template>
     <Header></Header>
     <div class="relative w-full h-[90vh] overflow-hidden mt-[10vh]">
-        <div
-            class="flex w-full h-full transition-transform duration-300"
-            ref="carousel"
-        >
-            <div
-                class="flex-shrink-0 w-full h-full"
-                v-for="(image, index) in images"
-                :key="index"
-            >
+        <div class="flex w-full h-full transition-transform duration-[1000ms]" ref="carousel">
+            <div v-for="(image, index) in images" :key="index" class="flex-shrink-0 w-full h-full scale-on-scroll">
                 <img class="w-full h-full" :src="image.src" :alt="image.alt" />
             </div>
         </div>
 
         <div
-            class="absolute bottom-[10vh] transform hover:scale-70 hover:brightness-125 text-blue-500 left-1/2 transform -translate-x-1/2 flex justify-center items-center w-full px-4"
-        >
+            class="absolute bottom-[10vh] duration-200 hover:scale-70 hover:brightness-125 text-blue-500 left-1/2 transform -translate-x-1/2 flex justify-center items-center w-full px-4">
             <div
-                class="bg-black bg-opacity-25 hover:scale-110 hover:text-blue-500 text-black w-[50vw] text-white h-[40vh] p-4 rounded shadow-lg flex flex-col justify-evenly items-center"
-            >
+                class="bg-black bg-opacity-25 hover:scale-110 duration-200 hover:text-blue-500 w-[50vw] text-white h-[40vh] p-4 rounded shadow-lg flex flex-col justify-evenly items-center scale-on-scroll">
                 <p class="text-center text-[25px] fw-extrabold">
                     The Berlin Travel And Tours
                 </p>
@@ -51,36 +42,11 @@
             </div>
         </div>
 
-        <!-- <div
-            class="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 cursor-pointer"
-            @click="prevSlide"
-        >
-            <svg
-                class="w-10 h-10 text-gray-500 hover:text-gray-800"
-                viewBox="0 0 24 24"
-            >
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-            </svg>
-        </div> -->
-        <!-- <div
-            class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 cursor-pointer"
-            @click="nextSlide"
-        >
-            <svg
-                class="w-10 h-10 text-gray-500 hover:text-gray-800"
-                viewBox="0 0 24 24"
-            >
-                <path
-                    d="M8.59 16.59L10 18 16 12 10 6 8.59 7.41 13.17 12z"
-                ></path>
-            </svg>
-        </div> -->
+
     </div>
-    <div
-        class="w-full flex justify-center items-center h-[70vh] bg-[rgb(237,233,238)]"
-    >
+    <div class="w-full flex justify-center items-center h-[70vh] bg-[rgb(237,233,238)]">
         <div class="w-[60vw] h-[60%] flex justify-center items-center">
-            <div class="w-[50%] h-[100%] pt-[20px]" id="aboutSection">
+            <div class="w-[50%] h-[100%] pt-[20px] about-section scale-on-scroll" id="aboutSection">
                 <p class="text-[#b73a04] flex justify-center items-center">
                     ESTABLISHED 2018
                 </p>
@@ -94,35 +60,25 @@
                     budget.
                 </p>
             </div>
-            <div class="w-[48%] ml-[1vw] h-[100%] bg-purple-500">
-                <img
-                    class="w-[100%] transform hover:scale-110 hover:brightness-125 h-[100%]"
-                    src="https://i.pinimg.com/474x/8e/08/42/8e0842284dd4fc3888591ebb3d1bdb5d.jpg"
-                    alt=""
-                />
+            <div class="w-[48%] ml-[1vw] h-[100%] bg-purple-500 scale-on-scroll">
+                <img class="w-[100%] duration-200 transform hover:scale-110 hover:brightness-125 h-[100%]"
+                    src="https://i.pinimg.com/474x/8e/08/42/8e0842284dd4fc3888591ebb3d1bdb5d.jpg" alt="" />
             </div>
         </div>
     </div>
 
     <div class="w-full flex justify-center items-center h-[45vh] bg-white">
         <div
-            class="w-[50vw] h-[100%] flex justify-center transition duration-300 ease-in-out transform hover:scale-110 items-center"
-        >
+            class="w-[50vw] h-[100%] flex justify-center transition duration-300 ease-in-out transform hover:scale-10 items-center">
             <div
-                class="w-[50%] h-[100%] flex justify-center items-center transition duration-300 ease-in-out transform hover:scale-110 hover:shadow-lg hover:bg-gray-200"
-            >
-                <img
-                    class="w-[10vw] h-[100%] transition duration-300 ease-in-out transform hover:scale-110 hover:z-10 hover:brightness-125 hover:rotate-12"
-                    src="https://i.pinimg.com/564x/a8/a5/61/a8a5619a67d3502ff7eb1057137a784f.jpg"
-                    alt=""
-                />
-                <img
-                    class="w-[10vw] h-[100%] mb-[3vw] transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-125 hover:rotate-12"
-                    src="https://i.pinimg.com/474x/c3/c3/ae/c3c3ae776cebbfda4f22db92a64dbe52.jpg"
-                    alt=""
-                />
+                class="w-[50%] h-[100%] flex rounded-md justify-center items-center transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:bg-gray-200">
+                <img class="w-[10vw] h-[90%] rounded-md mx-2 transition duration-300 ease-in-out transform hover:scale-125 hover:z-10 hover:brightness-125"
+                    src="https://i.pinimg.com/564x/a8/a5/61/a8a5619a67d3502ff7eb1057137a784f.jpg" alt="" />
+                <img class="w-[10vw] h-[90%] rounded-md mx-2 transition duration-300 ease-in-out transform hover:scale-125 hover:z-10 hover:brightness-125"
+                    src="https://i.pinimg.com/474x/c3/c3/ae/c3c3ae776cebbfda4f22db92a64dbe52.jpg" alt="" />
             </div>
-            <div class="w-[48%] ml-[1vw] h-[100%]">
+
+            <div class="w-[48%] ml-[1vw] h-[100%] scale-on-scroll">
                 <p class="pt-[1vw]" id="about2">
                     Travel is here, Pleasure to the heart
                 </p>
@@ -137,55 +93,27 @@
             </div>
         </div>
     </div>
-    <div
-        v-if="loading"
-        class="absolute inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50"
-    >
+    <div v-if="loading" class="absolute inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
         <div class="text-white text-xl animate-spin">
-            <svg
-                class="w-12 h-12 text-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-            >
-                <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                ></circle>
-                <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 2.577 1.004 4.911 2.635 6.635l1.365-1.344z"
-                ></path>
+            <svg class="w-12 h-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 2.577 1.004 4.911 2.635 6.635l1.365-1.344z">
+                </path>
             </svg>
         </div>
     </div>
-    <div
-        id="holidays"
-        class="w-full flex flex-col items-center justify-center bg-gradient-to-t from-[rgb(0,83,176)] via-[rgb(0,98,242)] to-[rgb(112,194,239)] py-12 px-6"
-    >
+    <div id="holidays"
+        class="w-full flex flex-col items-center justify-center bg-gradient-to-t from-[rgb(0,83,176)] via-[rgb(0,98,242)] to-[rgb(112,194,239)] py-12 px-6">
         <p class="text-2xl font-bold text-white mb-8" id="about2">
             Available Tours and Itinerary
         </p>
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full max-w-7xl"
-        >
-            <div
-                v-for="(tour, index) in tours"
-                :key="index"
-                class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-300 hover:scale-105 border border-gray-200"
-                :class="{ 'opacity-90': isExpired(tour.boarding_date) }"
-            >
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full max-w-7xl">
+            <div v-for="(tour, index) in tours" :key="index"
+                class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-300 hover:scale-105 border border-gray-200 scale-on-scroll"
+                :class="{ 'opacity-90': isExpired(tour.boarding_date) }">
                 <!-- Image Section -->
-                <img
-                    class="w-full h-48 object-cover"
-                    :src="'/storage/' + tour.images"
-                    alt="Tour Image"
-                />
+                <img class="w-full h-48 object-cover" :src="'/storage/' + tour.images" alt="Tour Image" />
 
                 <!-- Card Content -->
                 <div class="p-4">
@@ -198,26 +126,17 @@
                     <p class="text-xl font-bold text-blue-600" id="tours1">
                         {{ tour.tour_prices }}
                     </p>
-                    <p
-                        v-if="isExpired(tour.boarding_date)"
-                        class="text-red-500 font-semibold mt-2"
-                    >
+                    <p v-if="isExpired(tour.boarding_date)" class="text-red-500 font-semibold mt-2">
                         Expired
                     </p>
                 </div>
 
                 <!-- Button Section -->
                 <div class="p-4 pt-0">
-                    <button
-                        :disabled="isExpired(tour.boarding_date)"
-                        @click="bookTour(tour.id)"
-                        class="w-full py-2 text-center text-white rounded-md transition"
-                        :class="
-                            isExpired(tour.boarding_date)
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-500 hover:bg-blue-600'
-                        "
-                    >
+                    <button :disabled="isExpired(tour.boarding_date)" @click="bookTour(tour.id)"
+                        class="w-full py-2 text-center text-white rounded-md transition" :class="isExpired(tour.boarding_date)
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-blue-500 hover:bg-blue-600'">
                         Book Tour
                     </button>
                 </div>
@@ -227,6 +146,11 @@
 
     <Footer id="footer"></Footer>
 </template>
+
+
+
+
+
 
 <script>
 import Header from "./Header.vue";
@@ -297,6 +221,29 @@ export default {
         };
     },
     methods: {
+        observeElements() {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('scale-in');
+                        } else {
+                            entry.target.classList.remove('scale-in');
+                        }
+                    });
+                },
+                {
+                    threshold: 0.1,
+                }
+            );
+
+            const scaleElements = document.querySelectorAll('.scale-on-scroll');
+
+            scaleElements.forEach((element) => {
+                observer.observe(element);
+            });
+        },
+
         isExpired(boardingDate) {
             const currentDate = new Date();
             const tourDate = new Date(boardingDate);
@@ -314,9 +261,8 @@ export default {
         },
         updateCarousel() {
             const carousel = this.$refs.carousel;
-            carousel.style.transform = `translateX(${
-                this.currentIndex * -100
-            }%)`;
+            carousel.style.transform = `translateX(${this.currentIndex * -100
+                }%)`;
         },
         fetching() {
             this.loading = true;
@@ -350,6 +296,8 @@ export default {
         this.fetching();
         this.updateCarousel();
         this.startAutoSlide();
+        this.observeElements();
+
 
         const hash = window.location.hash;
         if (hash === "#holidays") {
@@ -373,6 +321,15 @@ export default {
 </script>
 
 <style>
+.scale-on-scroll {
+    transform: scale(1);
+    transition: transform 0.5s ease-out;
+}
+
+.scale-in {
+    transform: scale(1.05);
+}
+
 #aboutSection {
     font-family: "Playwrite CU", cursive;
     font-size: 0.8vw;
