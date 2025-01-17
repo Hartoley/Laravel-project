@@ -59,7 +59,7 @@
                         for further assistance and review.
                     </div>
 
-                    <div v-else class="text-red-500 text-sm text-center">
+                    <div v-if="tour.paymentStatus === 'pending'" class="text-red-500 text-sm text-center">
                         Payment not approved yet. Kindly wait while your payment
                         is approved.
                     </div>

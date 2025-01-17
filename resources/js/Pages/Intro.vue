@@ -103,6 +103,60 @@
             </svg>
         </div>
     </div>
+    <div class="travel-section flex flex-col md:flex-row items-start justify-evenly px-8 py-16 bg-gray-50">
+        <!-- Left Content -->
+        <div class="content md:w-1/3 mb-8 md:mb-0 md:pr-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4 hover:text-blue-500 transition duration-300">
+                Travel to make sweet memories
+            </h1>
+            <p class="text-lg text-gray-600 mb-8 hover:text-gray-800 transition duration-300">
+                Find trips that fit a flexible lifestyle
+            </p>
+            <div class="features space-y-6">
+                <div v-for="(feature, index) in features" :key="index"
+                    class="feature flex items-start space-x-4 group hover:scale-105 transition duration-300">
+                    <div
+                        class="feature-number flex items-center justify-center w-12 h-12 bg-blue-500 text-white font-bold rounded-full group-hover:bg-blue-600 transition duration-300">
+                        {{ feature.number }}
+                    </div>
+                    <div>
+                        <h2
+                            class="text-xl font-semibold text-gray-700 mb-2 group-hover:text-blue-500 transition duration-300">
+                            {{ feature.title }}
+                        </h2>
+                        <p class="text-gray-600 group-hover:text-gray-800 transition">
+                            {{ feature.description }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <button
+                class="mt-8 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 hover:scale-110 transition duration-300"
+                @click="startExplore">
+                Start your explore
+            </button>
+        </div>
+
+
+        <div class="image-container relative md:w-1/3">
+            <img class="w-full rounded-lg shadow-lg hover:scale-105 transition duration-300"
+                src="https://i.pinimg.com/474x/9c/38/ea/9c38ead092b560475aebeaa7cc0294a5.jpg" alt="Scenic Mountain" />
+            <div v-for="(profile, index) in profiles" :key="index"
+                class="profile-badge absolute flex items-center bg-white border w-[13vw] border-gray-200 shadow-lg rounded-3xl p-2 hover:shadow-xl hover:scale-110 transition duration-300"
+                :style="{ top: profile.top, left: profile.left }">
+                <img :src="profile.image" :alt="profile.name"
+                    class="w-10 h-10 rounded-full hover:scale-110 transition duration-300" />
+                <div class="ml-2 w-50">
+                    <p class="text-sm font-semibold text-gray-800 hover:text-blue-500 transition duration-300">
+                        {{ profile.name }}
+                    </p>
+                    <p class="text-sm text-blue-500 font-medium">
+                        {{ profile.rating }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="holidays"
         class="w-full flex flex-col items-center justify-center bg-gradient-to-t from-[rgb(0,83,176)] via-[rgb(0,98,242)] to-[rgb(112,194,239)] py-12 px-6">
         <p class="text-2xl font-bold text-white mb-8" id="about2">
@@ -144,6 +198,33 @@
         </div>
     </div>
 
+
+    <div class="w-full flex items-center justify-evenly my-10 h-[65vh]">
+        <div class="relative w-full md:w-3/4 h-[60vh]">
+            <button
+                class="absolute top-2 right-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-300 z-10">
+                Book now
+            </button>
+
+            <div class="relative overflow-hidden rounded-lg shadow-md h-full">
+                <video muted ref="videoPlayer" class="w-full h-full object-cover" :src="videoSrc" controls
+                    poster="https://i.pinimg.com/474x/b1/5f/d9/b15fd9c6a0f08e8b9b750f1034bad8cc.jpg"
+                    playsinline></video>
+
+                <div v-if="!isPlaying"
+                    class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
+                    @click="togglePlay">
+                    <div class="bg-white w-12 h-12 rounded-full shadow-md flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.5 4.5L13.5 10L6.5 15.5V4.5Z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <Footer id="footer"></Footer>
 </template>
 
@@ -164,6 +245,50 @@ export default {
     },
     data() {
         return {
+            features: [
+                {
+                    number: "01",
+                    title: "Find trips that fit your freedom",
+                    description:
+                        "Traveling offers freedom and flexibility, solitude and spontaneity, and privacy and purpose.",
+                },
+                {
+                    number: "02",
+                    title: "Get back to nature by travel",
+                    description:
+                        "The world is a playground, and you can finally explore Mother Nature's immaculate canvas.",
+                },
+                {
+                    number: "03",
+                    title: "Reignite those travel tastebuds",
+                    description:
+                        "There are infinite reasons to love travel, one of them being the food, glorious food.",
+                },
+            ],
+            profiles: [
+                {
+                    name: "Kamala Diana",
+                    rating: "4.8",
+                    image: "https://i.pinimg.com/474x/9c/38/ea/9c38ead092b560475aebeaa7cc0294a5.jpg",
+                    top: "10%",
+                    left: "65%",
+                },
+                {
+                    name: "Heikki Adem",
+                    rating: "4.9",
+                    image: "https://i.pinimg.com/736x/c8/a0/25/c8a0250751a6fc050c6a13d62bdde8fa.jpg",
+                    top: "45%",
+                    left: "80%",
+                },
+                {
+                    name: "Joe Zetano",
+                    rating: "4.5",
+                    image: "https://i.pinimg.com/474x/c8/6f/58/c86f580cfaed6259c3d921660b5f98e8.jpg",
+                    top: "75%",
+                    left: "20%",
+                },
+            ],
+
             tours: [],
             images: [
                 {
@@ -218,9 +343,27 @@ export default {
             currentIndex: 0,
             slideInterval: null,
             loading: false,
+            isPlaying: false,
+            videoSrc:
+                "https://youtu.be/eLPVDaaQybY?si=AA1oJNzyvcSk9jCa"
         };
     },
     methods: {
+        startExplore() {
+            alert("Explore button clicked!");
+        },
+        togglePlay() {
+            const video = this.$refs.videoPlayer;
+
+            if (this.isPlaying) {
+                video.pause();
+            } else {
+                video.play();
+            }
+
+            this.isPlaying = !this.isPlaying;
+        },
+
         observeElements() {
             const observer = new IntersectionObserver(
                 (entries) => {
