@@ -45,7 +45,7 @@
 
     </div>
     <div class="w-full flex justify-center items-center h-[70vh] bg-[rgb(237,233,238)]">
-        <div class="w-[60vw] h-[60%] flex justify-center items-center">
+        <div class="w-[55Svw] h-[60%] flex justify-evenly items-center">
             <div class="w-[50%] h-[100%] pt-[20px] about-section scale-on-scroll" id="aboutSection">
                 <p class="text-[#b73a04] flex justify-center items-center">
                     ESTABLISHED 2018
@@ -104,7 +104,6 @@
         </div>
     </div>
     <div class="travel-section flex flex-col md:flex-row items-start justify-evenly px-8 py-16 bg-gray-50">
-        <!-- Left Content -->
         <div class="content md:w-1/3 mb-8 md:mb-0 md:pr-8">
             <h1 class="text-4xl font-bold text-gray-800 mb-4 hover:text-blue-500 transition duration-300">
                 Travel to make sweet memories
@@ -162,7 +161,9 @@
         <p class="text-2xl font-bold text-white mb-8" id="about2">
             Available Tours and Itinerary
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full max-w-7xl">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
+
             <div v-for="(tour, index) in tours" :key="index"
                 class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transform transition duration-300 hover:scale-105 border border-gray-200 scale-on-scroll"
                 :class="{ 'opacity-90': isExpired(tour.boarding_date) }">
@@ -199,7 +200,8 @@
     </div>
 
 
-    <div class="w-full flex items-center justify-evenly my-10 h-[65vh]">
+    <div ref="mainDiv" :class="{ 'zoom-effect': isZoomed }"
+        class="w-full flex items-center justify-evenly my-10 h-[65vh] transition-transform duration-500">
         <div class="relative w-full md:w-3/4 h-[60vh]">
             <button
                 class="absolute top-2 right-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-300 z-10">
@@ -231,7 +233,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -256,6 +257,7 @@ export default {
     },
     data() {
         return {
+            isZoomed: false,
             features: [
                 {
                     number: "01",
@@ -361,6 +363,11 @@ export default {
         };
     },
     methods: {
+        handleScroll() {
+            const mainDiv = this.$refs.mainDiv;
+            const bounding = mainDiv.getBoundingClientRect();
+            this.isZoomed = bounding.top < window.innerHeight && bounding.bottom > 0;
+        },
         startExplore() {
             alert("Explore button clicked!");
         },
@@ -462,6 +469,7 @@ export default {
         this.updateCarousel();
         this.startAutoSlide();
         this.observeElements();
+        window.addEventListener("scroll", this.handleScroll);
 
 
         const hash = window.location.hash;
@@ -481,11 +489,16 @@ export default {
     },
     beforeDestroy() {
         this.stopAutoSlide();
+        window.removeEventListener("scroll", this.handleScroll);
     },
 };
 </script>
 
 <style>
+.zoom-effect {
+    transform: scale(1.1);
+}
+
 .scale-on-scroll {
     transform: scale(1);
     transition: transform 0.5s ease-out;
