@@ -60,8 +60,8 @@
                     budget.
                 </p>
             </div>
-            <div class="w-[48%] ml-[1vw] h-[100%] bg-purple-500 scale-on-scroll">
-                <img class="w-[100%] duration-200 transform hover:scale-110 hover:brightness-125 h-[100%]"
+            <div class="w-[40%] rounded-lg ml-[1vw] h-[100%] bg-purple-500 scale-on-scroll">
+                <img class="w-[100%] rounded-lg duration-200 transform hover:scale-110 hover:brightness-125 h-[100%]"
                     src="https://i.pinimg.com/474x/8e/08/42/8e0842284dd4fc3888591ebb3d1bdb5d.jpg" alt="" />
             </div>
         </div>
@@ -207,9 +207,10 @@
             </button>
 
             <div class="relative overflow-hidden rounded-lg shadow-md h-full">
-                <video muted ref="videoPlayer" class="w-full h-full object-cover" :src="videoSrc" controls
-                    poster="https://i.pinimg.com/474x/b1/5f/d9/b15fd9c6a0f08e8b9b750f1034bad8cc.jpg"
-                    playsinline></video>
+                <video ref="videoPlayer" class="w-full h-full object-cover" :src="videoSrc"
+                    poster="https://i.pinimg.com/474x/b1/5f/d9/b15fd9c6a0f08e8b9b750f1034bad8cc.jpg" playsinline
+                    @ended="onVideoEnd" @play="onPlay" @pause="onPause" @mouseover="onHover(true)"
+                    @mouseleave="onHover(false)" :controls="false"></video>
 
                 <div v-if="!isPlaying"
                     class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
@@ -220,7 +221,17 @@
                         </svg>
                     </div>
                 </div>
+                <div v-if="isPlaying && showPauseButton"
+                    class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
+                    @click="togglePlay">
+                    <div class="bg-white w-12 h-12 rounded-full shadow-md flex items-center justify-center">
+                        <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6 4H8V16H6V4ZM12 4H14V16H12V4Z"></path>
+                        </svg>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -344,8 +355,9 @@ export default {
             slideInterval: null,
             loading: false,
             isPlaying: false,
+            showPauseButton: false,
             videoSrc:
-                "https://youtu.be/eLPVDaaQybY?si=AA1oJNzyvcSk9jCa"
+                "https://videos.pexels.com/video-files/3015511/3015511-sd_640_360_24fps.mp4"
         };
     },
     methods: {
@@ -354,16 +366,26 @@ export default {
         },
         togglePlay() {
             const video = this.$refs.videoPlayer;
-
-            if (this.isPlaying) {
-                video.pause();
-            } else {
+            if (video.paused) {
                 video.play();
+            } else {
+                video.pause();
             }
-
-            this.isPlaying = !this.isPlaying;
         },
+        onPlay() {
+            this.isPlaying = true;
+        },
+        onPause() {
+            this.isPlaying = false;
+        },
+        onHover(isHovered) {
+            this.showPauseButton = isHovered && this.isPlaying;
+        },
+        onVideoEnd() {
+            this.isPlaying = false;
+            this.$refs.videoPlayer.load();
 
+        },
         observeElements() {
             const observer = new IntersectionObserver(
                 (entries) => {
